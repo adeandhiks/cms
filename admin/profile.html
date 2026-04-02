@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile — Admin CMS</title>
+    <meta name="admin-page-name" content="Profile" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="../css/admin.css" />
+    <style>
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 1.5rem;
+            max-width: 900px;
+        }
+
+        .photo-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+            text-align: center;
+        }
+
+        .photo-preview {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            margin: 0 auto 1.25rem;
+            overflow: hidden;
+            border: 4px solid var(--color-border);
+            background: #F1F5F9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: var(--color-text-muted);
+        }
+
+        .photo-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .drop-zone {
+            border: 2px dashed var(--color-border);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 1rem;
+            color: var(--color-text-muted);
+            font-size: .85rem;
+        }
+
+        .drop-zone:hover,
+        .drop-zone.dragover {
+            border-color: var(--color-primary);
+            background: rgba(37, 99, 235, .04);
+            color: var(--color-primary);
+        }
+
+        .drop-zone input[type="file"] {
+            display: none;
+        }
+
+        .details-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .details-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .upload-progress {
+            display: none;
+            margin-top: .75rem;
+        }
+
+        .upload-progress .progress-bar {
+            height: 6px;
+            background: var(--color-border);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .upload-progress .progress-fill {
+            height: 100%;
+            background: var(--color-primary);
+            border-radius: 3px;
+            width: 0%;
+            transition: width .3s ease;
+        }
+
+        .upload-progress .progress-text {
+            font-size: .78rem;
+            color: var(--color-text-muted);
+            margin-top: .3rem;
+        }
+
+        @media(max-width:768px) {
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="admin-layout">
+
+        <!-- ── SIDEBAR ── -->
+        <aside class="admin-sidebar" id="admin-sidebar" role="navigation" aria-label="Admin sidebar">
+            <div class="sidebar-brand">
+                <div class="sidebar-brand-name">AP Admin</div>
+                <div class="sidebar-brand-sub">Content Management System</div>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-section-label">Main</div>
+                <a href="dashboard.html"><span class="nav-icon">📊</span> Dashboard</a>
+                <div class="nav-section-label">Content</div>
+                <a href="profile.html" class="active"><span class="nav-icon">👤</span> Profile</a>
+                <a href="experience.html"><span class="nav-icon">💼</span> Experience</a>
+                <a href="lecturing.html"><span class="nav-icon">🎓</span> Lecturing</a>
+                <a href="research.html"><span class="nav-icon">📄</span> Research</a>
+                <a href="product.html"><span class="nav-icon">🚀</span> Products</a>
+                <a href="community-services.html"><span class="nav-icon">🤝</span> Community</a>
+                <div class="nav-section-label">Communication</div>
+                <a href="contact.html"><span class="nav-icon">📞</span> Contact Info</a>
+
+
+                <div class="nav-section-label">Administration</div>
+                <a href="users.html"><span class="nav-icon">👥</span> Users</a>
+                <a href="settings.html"><span class="nav-icon">⚙️</span> Settings</a>
+                <div class="nav-section-label">Site</div>
+                <a href="../index.html" target="_blank"><span class="nav-icon">🌐</span> View Website</a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="sidebar-user">
+                    <div class="sidebar-user-avatar" id="sidebar-user-avatar">A</div>
+                    <div>
+                        <div class="sidebar-user-name" id="sidebar-user-name">Admin</div>
+                        <div class="sidebar-user-role">Administrator</div>
+                    </div>
+                    <button class="btn-logout" id="btn-logout" title="Sign out">↩</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ── MAIN ── -->
+        <div class="admin-main">
+            <header class="admin-topbar" role="banner">
+                <div style="display:flex;align-items:center;gap:1rem;">
+                    <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle sidebar">☰</button>
+                    <div>
+                        <div class="topbar-title">Profile Management</div>
+                    </div>
+                </div>
+                <div class="topbar-actions">
+                    <span class="topbar-badge">CMS v1.0</span>
+                </div>
+            </header>
+
+            <div class="admin-content">
+                <div class="page-header-bar">
+                    <div>
+                        <h2>👤 Edit Profile</h2>
+                        <p>Update your public profile information and photo</p>
+                    </div>
+                </div>
+
+                <div class="profile-grid">
+                    <!-- Photo Card -->
+                    <div class="photo-card">
+                        <div class="photo-preview" id="photo-preview">
+                            <span id="photo-placeholder">👤</span>
+                        </div>
+                        <div class="drop-zone" id="drop-zone">
+                            <p>📷 Click or drag & drop a photo</p>
+                            <p style="font-size:.75rem;margin-top:.3rem;">JPG, PNG, WebP (max 2MB)</p>
+                            <input type="file" id="photo-input" accept="image/jpeg,image/png,image/webp" />
+                        </div>
+                        <div class="upload-progress" id="upload-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progress-fill"></div>
+                            </div>
+                            <div class="progress-text" id="progress-text">Uploading…</div>
+                        </div>
+                        <button class="btn btn-danger btn-sm" id="remove-photo-btn"
+                            style="margin-top:1rem;display:none;">🗑 Remove Photo</button>
+                    </div>
+
+                    <!-- Details Card -->
+                    <div class="details-card">
+                        <h3>Profile Information</h3>
+                        <form id="profile-form" novalidate>
+                            <div class="form-group">
+                                <label for="p-name">Full Name</label>
+                                <input type="text" id="p-name" placeholder="Enter your full name" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="p-logo">Logo Text</label>
+                                <input type="text" id="p-logo" placeholder="e.g. AP (leave blank for auto-initials)" maxlength="5" />
+                                <small style="color:var(--color-text-muted);font-size:.75rem;">Displayed on navbar. Leave blank to auto-generate from your name initials.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="p-title">Professional Title</label>
+                                <input type="text" id="p-title" placeholder="Researcher · Lecturer · Data Scientist" />
+                            </div>
+                            <div class="form-group">
+                                <label for="p-motto">Slogan / Motto</label>
+                                <input type="text" id="p-motto" placeholder="Advancing knowledge through research and innovation" />
+                            </div>
+                            <div class="form-group">
+                                <label for="p-bio">Bio / About</label>
+                                <textarea id="p-bio" rows="5"
+                                    placeholder="A brief description about yourself…"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary" id="save-btn" style="margin-top:.5rem;">
+                                💾 Save Profile
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { supabase } from '../js/supabase.js';
+        import { requireSecretKey, requireAuth, initLogout, initSidebar, showToast, loadSidebarBrand } from './admin.js';
+
+        // ── Verify access ─────────────────────────────────────────
+        const keyValid = await requireSecretKey();
+        if (!keyValid) throw new Error('Invalid key');
+        await requireAuth();
+        initLogout();
+        initSidebar();
+        loadSidebarBrand();
+
+        let profileId = null;
+        let currentPhotoUrl = null;
+
+        // ── Load profile data ──────────────────────────────────────
+        async function loadProfile() {
+            const { data, error } = await supabase
+                .from('profile')
+                .select('*')
+                .limit(1)
+                .single();
+
+            if (error || !data) {
+                console.warn('Profile not found, will create on save');
+                return;
+            }
+
+            profileId = data.id;
+            document.getElementById('p-name').value = data.name || '';
+            document.getElementById('p-logo').value = data.logo_text || '';
+            document.getElementById('p-title').value = data.title || '';
+            document.getElementById('p-motto').value = data.motto || '';
+            document.getElementById('p-bio').value = data.bio || '';
+
+            if (data.photo_url) {
+                currentPhotoUrl = data.photo_url;
+                showPhotoPreview(data.photo_url + (data.photo_url.includes('?') ? '&' : '?') + 't=' + Date.now());
+            }
+        }
+        await loadProfile();
+
+        // ── Photo preview ──────────────────────────────────────────
+        function showPhotoPreview(url) {
+            const preview = document.getElementById('photo-preview');
+            const placeholder = document.getElementById('photo-placeholder');
+            const removeBtn = document.getElementById('remove-photo-btn');
+
+            preview.innerHTML = `<img src="${url}" alt="Profile photo" />`;
+            removeBtn.style.display = 'inline-flex';
+        }
+
+        function resetPhotoPreview() {
+            const preview = document.getElementById('photo-preview');
+            preview.innerHTML = '<span id="photo-placeholder">👤</span>';
+            document.getElementById('remove-photo-btn').style.display = 'none';
+        }
+
+        // ── Drop zone interaction ──────────────────────────────────
+        const dropZone = document.getElementById('drop-zone');
+        const photoInput = document.getElementById('photo-input');
+
+        dropZone.addEventListener('click', () => photoInput.click());
+        dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            if (e.dataTransfer.files.length) handleFileSelect(e.dataTransfer.files[0]);
+        });
+        photoInput.addEventListener('change', (e) => {
+            if (e.target.files.length) handleFileSelect(e.target.files[0]);
+        });
+
+        async function handleFileSelect(file) {
+            // Validate file
+            const maxSize = 2 * 1024 * 1024; // 2MB
+            if (file.size > maxSize) {
+                showToast('File too large. Max size is 2MB.', 'error');
+                return;
+            }
+            if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+                showToast('Invalid file type. Use JPG, PNG, or WebP.', 'error');
+                return;
+            }
+
+            // Show upload progress
+            const progressDiv = document.getElementById('upload-progress');
+            const progressFill = document.getElementById('progress-fill');
+            const progressText = document.getElementById('progress-text');
+            progressDiv.style.display = 'block';
+            progressFill.style.width = '30%';
+            progressText.textContent = 'Uploading…';
+
+            try {
+                // Generate unique filename
+                const ext = file.name.split('.').pop();
+                const fileName = `profile-${Date.now()}.${ext}`;
+
+                progressFill.style.width = '60%';
+
+                // Upload to Supabase Storage
+                const { data, error } = await supabase.storage
+                    .from('profile-photos')
+                    .upload(fileName, file, {
+                        cacheControl: '3600',
+                        upsert: true,
+                    });
+
+                if (error) {
+                    showToast('Upload failed: ' + error.message, 'error');
+                    progressDiv.style.display = 'none';
+                    return;
+                }
+
+                progressFill.style.width = '90%';
+                progressText.textContent = 'Processing…';
+
+                // Get public URL
+                const { data: urlData } = supabase.storage
+                    .from('profile-photos')
+                    .getPublicUrl(fileName);
+
+                currentPhotoUrl = urlData.publicUrl;
+                showPhotoPreview(currentPhotoUrl);
+
+                progressFill.style.width = '100%';
+                progressText.textContent = 'Upload complete!';
+                setTimeout(() => { progressDiv.style.display = 'none'; }, 2000);
+
+                showToast('Photo uploaded! Click "Save Profile" to apply.');
+
+            } catch (err) {
+                showToast('Upload error: ' + err.message, 'error');
+                progressDiv.style.display = 'none';
+            }
+        }
+
+        // ── Remove photo ───────────────────────────────────────────
+        document.getElementById('remove-photo-btn').addEventListener('click', () => {
+            currentPhotoUrl = null;
+            resetPhotoPreview();
+            showToast('Photo removed. Click "Save Profile" to apply.');
+        });
+
+        // ── Save profile form ──────────────────────────────────────
+        document.getElementById('profile-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('save-btn');
+            btn.disabled = true;
+            btn.textContent = 'Saving…';
+
+            const profileData = {
+                name: document.getElementById('p-name').value.trim(),
+                logo_text: document.getElementById('p-logo').value.trim(),
+                title: document.getElementById('p-title').value.trim(),
+                motto: document.getElementById('p-motto').value.trim(),
+                bio: document.getElementById('p-bio').value.trim(),
+                photo_url: currentPhotoUrl,
+            };
+
+            if (!profileData.name) {
+                showToast('Full name is required', 'error');
+                btn.disabled = false;
+                btn.textContent = '💾 Save Profile';
+                return;
+            }
+
+            try {
+                let result;
+                if (profileId) {
+                    result = await supabase
+                        .from('profile')
+                        .update(profileData)
+                        .eq('id', profileId);
+                } else {
+                    result = await supabase
+                        .from('profile')
+                        .insert([profileData])
+                        .select();
+                    if (result.data?.[0]) profileId = result.data[0].id;
+                }
+
+                if (result.error) {
+                    showToast('Save failed: ' + result.error.message, 'error');
+                } else {
+                    showToast('Profile saved successfully!');
+                }
+            } catch (err) {
+                showToast('Error: ' + err.message, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '💾 Save Profile';
+            }
+        });
+    </script>
+</body>
+
+</html>

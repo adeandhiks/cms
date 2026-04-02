@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Products — Admin CMS</title>
+    <meta name="admin-page-name" content="Products" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="../css/admin.css" />
+</head>
+
+<body>
+    <div class="admin-layout">
+        <aside class="admin-sidebar" id="admin-sidebar">
+            <div class="sidebar-brand">
+                <div class="sidebar-brand-name">AP Admin</div>
+                <div class="sidebar-brand-sub">Content Management</div>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-section-label">Main</div>
+                <a href="dashboard.html"><span class="nav-icon">📊</span> Dashboard</a>
+                <div class="nav-section-label">Content</div>
+                <a href="profile.html"><span class="nav-icon">👤</span> Profile</a>
+                <a href="experience.html"><span class="nav-icon">💼</span> Experience</a>
+                <a href="lecturing.html"><span class="nav-icon">🎓</span> Lecturing</a>
+                <a href="research.html"><span class="nav-icon">📄</span> Research</a>
+                <a href="product.html" class="active"><span class="nav-icon">🚀</span> Products</a>
+                <a href="community-services.html"><span class="nav-icon">🤝</span> Community</a>
+                <div class="nav-section-label">Communication</div>
+                <a href="contact.html"><span class="nav-icon">📞</span> Contact Info</a>
+
+
+                <div class="nav-section-label">Administration</div>
+                <a href="users.html"><span class="nav-icon">👥</span> Users</a>
+                <a href="settings.html"><span class="nav-icon">⚙️</span> Settings</a>
+                <div class="nav-section-label">Site</div>
+                <a href="../index.html" target="_blank"><span class="nav-icon">🌐</span> View Website</a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="sidebar-user">
+                    <div class="sidebar-user-avatar" id="sidebar-user-avatar">A</div>
+                    <div>
+                        <div class="sidebar-user-name" id="sidebar-user-name">Admin</div>
+                        <div class="sidebar-user-role">Administrator</div>
+                    </div>
+                    <button class="btn-logout" id="btn-logout" title="Sign out">↩</button>
+                </div>
+            </div>
+        </aside>
+
+        <div class="admin-main">
+            <header class="admin-topbar">
+                <div style="display:flex;align-items:center;gap:1rem;">
+                    <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle sidebar">☰</button>
+                    <div class="topbar-title">Manage Products</div>
+                </div>
+            </header>
+            <main class="admin-content">
+                <div class="page-header-bar">
+                    <div>
+                        <h2>Products & IP</h2>
+                        <p>Manage products and intellectual property records.</p>
+                    </div>
+                    <button class="btn btn-primary" id="btn-add">+ Add Product</button>
+                </div>
+                <div class="table-card">
+                    <div class="table-card-header">
+                        <h3>All Products</h3>
+                        <div class="table-search">
+                            <span class="table-search-icon">🔍</span>
+                            <input type="search" id="table-search" placeholder="Search…" />
+                        </div>
+                    </div>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Product Name</th>
+                                    <th>Type</th>
+                                    <th>Year</th>
+                                    <th>Demo</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="product-tbody">
+                                <tr class="empty-row">
+                                    <td colspan="5">Loading…</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal-overlay" id="product-modal">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="product-modal-title">
+            <div class="modal-header">
+                <h3 id="product-modal-title">Add Product</h3>
+                <button class="modal-close" aria-label="Close">✕</button>
+            </div>
+            <div class="modal-body">
+                <form id="product-form" novalidate>
+                    <input type="hidden" id="product-id" />
+                    <div class="form-group">
+                        <label for="prod-name">Product Name *</label>
+                        <input type="text" id="prod-name" placeholder="e.g. AI Diagnostic Tool" required />
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="prod-type">Product Type *</label>
+                            <input type="text" id="prod-type" placeholder="e.g. Software, Patent, Tool" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="prod-year">Year *</label>
+                            <input type="number" id="prod-year" placeholder="e.g. 2023" min="2000" max="2030"
+                                required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="prod-desc">Description</label>
+                        <textarea id="prod-desc" placeholder="Describe the product…"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="prod-demo">Demo Link</label>
+                        <input type="url" id="prod-demo" placeholder="https://…" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost-sm modal-cancel">Cancel</button>
+                <button class="btn btn-primary" id="product-save">Save Product</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { supabase } from '../js/supabase.js';
+        import { requireSecretKey, requireAuth, initLogout, initSidebar, initModalClose, openModal, closeModal, showToast, showConfirm, esc, loadSidebarBrand } from './admin.js';
+
+        let allData = [];
+
+        async function loadData() {
+            const { data, error } = await supabase.from('product').select('*').order('year', { ascending: false });
+            if (error) { showToast('Failed to load data.', 'error'); return; }
+            allData = data || [];
+            renderTable(allData);
+        }
+
+        function renderTable(data) {
+            const tbody = document.getElementById('product-tbody');
+            if (!data.length) {
+                tbody.innerHTML = '<tr class="empty-row"><td colspan="5">No products yet.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = data.map(r => `
+      <tr>
+        <td><strong>${esc(r.product_name)}</strong></td>
+        <td><span class="badge badge-cyan">${esc(r.product_type)}</span></td>
+        <td><span class="badge badge-blue">${esc(String(r.year))}</span></td>
+        <td>${r.demo_link ? `<a href="${esc(r.demo_link)}" target="_blank" rel="noopener" style="color:var(--color-primary);font-size:.82rem">Demo ↗</a>` : '—'}</td>
+        <td><div class="td-actions">
+          <button class="btn-icon edit" data-id="${r.id}" title="Edit">✏️</button>
+          <button class="btn-icon delete" data-id="${r.id}" title="Delete">🗑️</button>
+        </div></td>
+      </tr>`).join('');
+
+            tbody.querySelectorAll('.btn-icon.edit').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const record = allData.find(r => r.id == btn.dataset.id);
+                    if (!record) return;
+                    document.getElementById('product-id').value = record.id;
+                    document.getElementById('prod-name').value = record.product_name || '';
+                    document.getElementById('prod-type').value = record.product_type || '';
+                    document.getElementById('prod-year').value = record.year || '';
+                    document.getElementById('prod-desc').value = record.description || '';
+                    document.getElementById('prod-demo').value = record.demo_link || '';
+                    document.getElementById('product-modal-title').textContent = 'Edit Product';
+                    openModal('product-modal');
+                });
+            });
+            tbody.querySelectorAll('.btn-icon.delete').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    showConfirm('This product will be permanently deleted.', async () => {
+                        const { error } = await supabase.from('product').delete().eq('id', btn.dataset.id);
+                        if (error) showToast('Delete failed.', 'error');
+                        else { showToast('Product deleted.'); await loadData(); }
+                    });
+                });
+            });
+        }
+
+        document.getElementById('table-search').addEventListener('input', (e) => {
+            const q = e.target.value.toLowerCase();
+            renderTable(allData.filter(r =>
+                (r.product_name || '').toLowerCase().includes(q) ||
+                (r.product_type || '').toLowerCase().includes(q)
+            ));
+        });
+
+        document.getElementById('btn-add').addEventListener('click', () => {
+            document.getElementById('product-form').reset();
+            document.getElementById('product-id').value = '';
+            document.getElementById('product-modal-title').textContent = 'Add Product';
+            openModal('product-modal');
+        });
+
+        document.getElementById('product-save').addEventListener('click', async () => {
+            const id = document.getElementById('product-id').value;
+            const payload = {
+                product_name: document.getElementById('prod-name').value.trim(),
+                product_type: document.getElementById('prod-type').value.trim(),
+                year: parseInt(document.getElementById('prod-year').value) || null,
+                description: document.getElementById('prod-desc').value.trim() || null,
+                demo_link: document.getElementById('prod-demo').value.trim() || null,
+            };
+            if (!payload.product_name || !payload.product_type || !payload.year) {
+                showToast('Name, Type, and Year are required.', 'error'); return;
+            }
+            const { error } = id
+                ? await supabase.from('product').update(payload).eq('id', id)
+                : await supabase.from('product').insert([payload]);
+            if (error) { showToast('Save failed: ' + error.message, 'error'); return; }
+            showToast(id ? 'Product updated.' : 'Product added.');
+            closeModal('product-modal');
+            await loadData();
+        });
+
+        (async () => {
+            const keyValid = await requireSecretKey();
+            if (!keyValid) throw new Error('Invalid key');
+            await requireAuth();
+            initLogout();
+            initSidebar();
+            loadSidebarBrand();
+            initModalClose();
+            await loadData();
+        })();
+    </script>
+</body>
+
+</html>

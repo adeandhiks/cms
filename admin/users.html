@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Users — Admin CMS</title>
+    <meta name="admin-page-name" content="Users" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="../css/admin.css" />
+    <style>
+        .badge-superadmin {
+            background: #EDE9FE;
+            color: #6D28D9;
+        }
+
+        .badge-admin {
+            background: #DBEAFE;
+            color: #1D4ED8;
+        }
+
+        .badge-editor {
+            background: #DCFCE7;
+            color: #15803D;
+        }
+
+        .badge-active {
+            background: #DCFCE7;
+            color: #15803D;
+        }
+
+        .badge-inactive {
+            background: #FEE2E2;
+            color: #B91C1C;
+        }
+
+        .pw-strength-bar {
+            height: 4px;
+            border-radius: 2px;
+            margin-top: .35rem;
+            background: #E2E8F0;
+            overflow: hidden;
+        }
+
+        .pw-strength-fill {
+            height: 100%;
+            transition: width .3s, background .3s;
+            width: 0%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="admin-layout">
+
+        <!-- SIDEBAR -->
+        <aside class="admin-sidebar" id="admin-sidebar">
+            <div class="sidebar-brand">
+                <div class="sidebar-brand-name">AP Admin</div>
+                <div class="sidebar-brand-sub">Content Management</div>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-section-label">Main</div>
+                <a href="dashboard.html"><span class="nav-icon">📊</span> Dashboard</a>
+                <div class="nav-section-label">Content</div>
+                <a href="profile.html"><span class="nav-icon">👤</span> Profile</a>
+                <a href="experience.html"><span class="nav-icon">💼</span> Experience</a>
+                <a href="lecturing.html"><span class="nav-icon">🎓</span> Lecturing</a>
+                <a href="research.html"><span class="nav-icon">📄</span> Research</a>
+                <a href="product.html"><span class="nav-icon">🚀</span> Products</a>
+                <a href="community-services.html"><span class="nav-icon">🤝</span> Community</a>
+                <div class="nav-section-label">Communication</div>
+                <a href="contact.html"><span class="nav-icon">📞</span> Contact Info</a>
+
+
+                <div class="nav-section-label">Administration</div>
+                <a href="users.html" class="active"><span class="nav-icon">👥</span> Users</a>
+                <a href="settings.html"><span class="nav-icon">⚙️</span> Settings</a>
+                <div class="nav-section-label">Site</div>
+                <a href="../index.html" target="_blank"><span class="nav-icon">🌐</span> View Website</a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="sidebar-user">
+                    <div class="sidebar-user-avatar" id="sidebar-user-avatar">A</div>
+                    <div>
+                        <div class="sidebar-user-name" id="sidebar-user-name">Admin</div>
+                        <div class="sidebar-user-role">Administrator</div>
+                    </div>
+                    <button class="btn-logout" id="btn-logout" title="Sign out">↩</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN -->
+        <div class="admin-main">
+            <header class="admin-topbar">
+                <div style="display:flex;align-items:center;gap:1rem;">
+                    <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle sidebar">☰</button>
+                    <div class="topbar-title">Manage Admin Users</div>
+                </div>
+            </header>
+
+            <main class="admin-content">
+                <div class="page-header-bar">
+                    <div>
+                        <h2>Admin User Accounts</h2>
+                        <p>Manage who can access the CMS dashboard. Passwords are encrypted with bcrypt (cost 12).</p>
+                    </div>
+                    <button class="btn btn-primary" id="btn-add">+ Add User</button>
+                </div>
+
+                <!-- Security info box -->
+                <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:.6rem;padding:1rem 1.25rem;
+                  margin-bottom:1.5rem;font-size:.82rem;color:#1E40AF;line-height:1.7;">
+                    <strong style="display:block;margin-bottom:.3rem;color:#1D4ED8;">🔐 Password Security</strong>
+                    All passwords are stored as <strong>bcrypt</strong> hashes (cost factor 12) using PostgreSQL's
+                    <code
+                        style="background:#DBEAFE;padding:1px 5px;border-radius:3px;font-family:monospace;">pgcrypto</code>
+                    extension.
+                    Plain-text passwords are <strong>never stored</strong>. Verification uses
+                    <code
+                        style="background:#DBEAFE;padding:1px 5px;border-radius:3px;font-family:monospace;">crypt(input, stored_hash)</code>
+                    for constant-time comparison.
+                </div>
+
+                <div class="table-card">
+                    <div class="table-card-header">
+                        <h3>All Accounts</h3>
+                        <div class="table-search">
+                            <span class="table-search-icon">🔍</span>
+                            <input type="search" id="table-search" placeholder="Search by name or email…" />
+                        </div>
+                    </div>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Status</th>
+                                    <th>Last Login</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="users-tbody">
+                                <tr class="empty-row">
+                                    <td colspan="6">Loading…</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- ADD / EDIT USER MODAL -->
+    <div class="modal-overlay" id="user-modal">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="user-modal-title">
+            <div class="modal-header">
+                <h3 id="user-modal-title">Add Admin User</h3>
+                <button class="modal-close" aria-label="Close">✕</button>
+            </div>
+            <div class="modal-body">
+                <form id="user-form" novalidate>
+                    <input type="hidden" id="user-id" />
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="user-name">Display Name *</label>
+                            <input type="text" id="user-name" placeholder="e.g. Super Admin" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="user-role">Role *</label>
+                            <select id="user-role">
+                                <option value="superadmin">Super Admin</option>
+                                <option value="admin">Admin</option>
+                                <option value="editor">Editor</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="user-email">Email Address *</label>
+                        <input type="email" id="user-email" placeholder="admin@example.com" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="user-password" id="user-password-label">Password *</label>
+                        <div style="position:relative;">
+                            <input type="password" id="user-password" placeholder="Min 8 characters"
+                                autocomplete="new-password" />
+                            <button type="button" id="toggle-modal-pw" style="position:absolute;right:.75rem;top:50%;transform:translateY(-50%);
+                           background:none;border:none;cursor:pointer;color:var(--color-text-muted);font-size:.9rem;"
+                                aria-label="Toggle password visibility">👁</button>
+                        </div>
+                        <!-- Password strength bar -->
+                        <div class="pw-strength-bar">
+                            <div class="pw-strength-fill" id="pw-strength-fill"></div>
+                        </div>
+                        <small id="pw-strength-label" style="color:var(--color-text-muted);font-size:.75rem;"></small>
+                        <small id="user-password-hint"
+                            style="color:var(--color-text-muted);font-size:.75rem;display:none;">
+                            Leave blank to keep current password.
+                        </small>
+                    </div>
+                    <div class="form-group" style="display:flex;align-items:center;gap:.75rem;margin-top:.5rem;">
+                        <input type="checkbox" id="user-active" style="width:auto;" checked />
+                        <label for="user-active" style="margin-bottom:0;cursor:pointer;">Account Active</label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost-sm modal-cancel">Cancel</button>
+                <button class="btn btn-primary" id="user-save">Save User</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CHANGE PASSWORD MODAL -->
+    <div class="modal-overlay" id="pw-modal">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="pw-modal-title">
+            <div class="modal-header">
+                <h3 id="pw-modal-title">Change Password</h3>
+                <button class="modal-close" aria-label="Close">✕</button>
+            </div>
+            <div class="modal-body">
+                <p id="pw-modal-user" style="font-weight:600;margin-bottom:1rem;color:var(--color-text);"></p>
+                <form id="pw-form" novalidate>
+                    <input type="hidden" id="pw-admin-id" />
+                    <div class="form-group">
+                        <label for="new-password">New Password *</label>
+                        <input type="password" id="new-password" placeholder="Min 8 characters" required
+                            autocomplete="new-password" />
+                        <div class="pw-strength-bar">
+                            <div class="pw-strength-fill" id="pw-strength-fill-2"></div>
+                        </div>
+                        <small id="pw-strength-label-2" style="color:var(--color-text-muted);font-size:.75rem;"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm Password *</label>
+                        <input type="password" id="confirm-password" placeholder="Repeat new password" required
+                            autocomplete="new-password" />
+                    </div>
+                </form>
+                <div style="background:#FEF9C3;border:1px solid #FDE047;border-radius:.5rem;
+                  padding:.75rem 1rem;margin-top:.5rem;font-size:.8rem;color:#713F12;">
+                    ⚠️ The bcrypt hash will be regenerated securely in the database via
+                    <code style="font-family:monospace;">crypt(new_pw, gen_salt('bf', 12))</code>.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost-sm modal-cancel">Cancel</button>
+                <button class="btn btn-primary" id="pw-save">Update Password</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { supabase } from '../js/supabase.js';
+        import {
+            requireSecretKey, requireAuth, initLogout, initSidebar, initModalClose,
+            openModal, closeModal, showToast, showConfirm, esc, loadSidebarBrand
+        } from './admin.js';
+
+        let allData = [];
+        let currentUser = null;
+
+        // ── Password strength meter ────────────────────────────────────
+        function checkStrength(pw, fillId, labelId) {
+            const fill = document.getElementById(fillId);
+            const label = document.getElementById(labelId);
+            if (!pw) { fill.style.width = '0%'; label.textContent = ''; return; }
+            let score = 0;
+            if (pw.length >= 8) score++;
+            if (pw.length >= 12) score++;
+            if (/[A-Z]/.test(pw)) score++;
+            if (/[0-9]/.test(pw)) score++;
+            if (/[^A-Za-z0-9]/.test(pw)) score++;
+            const levels = [
+                { w: '20%', c: '#EF4444', t: 'Very Weak' },
+                { w: '40%', c: '#F97316', t: 'Weak' },
+                { w: '60%', c: '#EAB308', t: 'Fair' },
+                { w: '80%', c: '#22C55E', t: 'Strong' },
+                { w: '100%', c: '#16A34A', t: 'Very Strong' },
+            ];
+            const lv = levels[Math.min(score, 4)];
+            fill.style.width = lv.w;
+            fill.style.background = lv.c;
+            label.textContent = lv.t;
+            label.style.color = lv.c;
+        }
+
+        document.getElementById('user-password').addEventListener('input', (e) =>
+            checkStrength(e.target.value, 'pw-strength-fill', 'pw-strength-label'));
+        document.getElementById('new-password').addEventListener('input', (e) =>
+            checkStrength(e.target.value, 'pw-strength-fill-2', 'pw-strength-label-2'));
+
+        // Show/hide password in add/edit modal
+        document.getElementById('toggle-modal-pw').addEventListener('click', () => {
+            const pw = document.getElementById('user-password');
+            pw.type = pw.type === 'password' ? 'text' : 'password';
+        });
+
+        // ── Load data ──────────────────────────────────────────────────
+        async function loadData() {
+            const { data, error } = await supabase
+                .from('admin_users')
+                .select('id,email,display_name,role,is_active,last_login,created_at')
+                .order('created_at', { ascending: true });
+            if (error) { showToast('Failed to load users.', 'error'); return; }
+            allData = data || [];
+            renderTable(allData);
+        }
+
+        function renderTable(data) {
+            const tbody = document.getElementById('users-tbody');
+            if (!data.length) {
+                tbody.innerHTML = '<tr class="empty-row"><td colspan="6">No admin users found.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = data.map(u => `
+      <tr>
+        <td>
+          <div style="display:flex;align-items:center;gap:.75rem;">
+            <div style="width:36px;height:36px;border-radius:50%;
+                        background:var(--gradient-primary);
+                        display:flex;align-items:center;justify-content:center;
+                        color:#fff;font-weight:700;font-size:.9rem;flex-shrink:0;">
+              ${esc(u.display_name).charAt(0).toUpperCase()}
+            </div>
+            <strong>${esc(u.display_name)}</strong>
+          </div>
+        </td>
+        <td>${esc(u.email)}</td>
+        <td><span class="badge badge-${esc(u.role)}">${esc(u.role)}</span></td>
+        <td><span class="badge badge-${u.is_active ? 'active' : 'inactive'}">${u.is_active ? 'Active' : 'Inactive'}</span></td>
+        <td style="font-size:.8rem;color:var(--color-text-muted);">
+          ${u.last_login ? new Date(u.last_login).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' }) : 'Never'}
+        </td>
+        <td>
+          <div class="td-actions">
+            <button class="btn-icon edit"   data-id="${u.id}" title="Edit user">✏️</button>
+            <button class="btn-icon change-pw" data-id="${u.id}" data-name="${esc(u.display_name)}" title="Change password" style="font-size:.8rem;">🔑</button>
+            <button class="btn-icon delete" data-id="${u.id}" title="Delete user" ${data.length <= 1 ? 'disabled style="opacity:.4;cursor:not-allowed;"' : ''}>🗑️</button>
+          </div>
+        </td>
+      </tr>`).join('');
+
+            // Edit
+            tbody.querySelectorAll('.btn-icon.edit').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const u = allData.find(x => x.id === btn.dataset.id);
+                    if (!u) return;
+                    document.getElementById('user-id').value = u.id;
+                    document.getElementById('user-name').value = u.display_name || '';
+                    document.getElementById('user-email').value = u.email || '';
+                    document.getElementById('user-role').value = u.role || 'admin';
+                    document.getElementById('user-active').checked = u.is_active;
+                    document.getElementById('user-password').value = '';
+                    document.getElementById('user-password-hint').style.display = 'block';
+                    document.getElementById('user-password-label').textContent = 'Password (optional)';
+                    document.getElementById('user-modal-title').textContent = 'Edit Admin User';
+                    openModal('user-modal');
+                });
+            });
+
+            // Change password
+            tbody.querySelectorAll('.btn-icon.change-pw').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.getElementById('pw-admin-id').value = btn.dataset.id;
+                    document.getElementById('pw-modal-user').textContent = '👤 ' + btn.dataset.name;
+                    document.getElementById('pw-form').reset();
+                    openModal('pw-modal');
+                });
+            });
+
+            // Delete
+            tbody.querySelectorAll('.btn-icon.delete:not([disabled])').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const u = allData.find(x => x.id === btn.dataset.id);
+                    showConfirm(`Delete admin account "${u?.display_name || u?.email}"? This cannot be undone.`, async () => {
+                        const { error } = await supabase.from('admin_users').delete().eq('id', btn.dataset.id);
+                        if (error) showToast('Delete failed: ' + error.message, 'error');
+                        else { showToast('User deleted.'); await loadData(); }
+                    });
+                });
+            });
+        }
+
+        // ── Search ────────────────────────────────────────────────────
+        document.getElementById('table-search').addEventListener('input', (e) => {
+            const q = e.target.value.toLowerCase();
+            renderTable(allData.filter(u =>
+                (u.display_name || '').toLowerCase().includes(q) ||
+                (u.email || '').toLowerCase().includes(q)
+            ));
+        });
+
+        // ── Add new user ──────────────────────────────────────────────
+        document.getElementById('btn-add').addEventListener('click', () => {
+            document.getElementById('user-form').reset();
+            document.getElementById('user-id').value = '';
+            document.getElementById('user-active').checked = true;
+            document.getElementById('user-password-hint').style.display = 'none';
+            document.getElementById('user-password-label').textContent = 'Password *';
+            document.getElementById('user-modal-title').textContent = 'Add Admin User';
+            openModal('user-modal');
+        });
+
+        // ── Save user (add or edit) ───────────────────────────────────
+        document.getElementById('user-save').addEventListener('click', async () => {
+            const id = document.getElementById('user-id').value;
+            const name = document.getElementById('user-name').value.trim();
+            const email = document.getElementById('user-email').value.trim();
+            const role = document.getElementById('user-role').value;
+            const active = document.getElementById('user-active').checked;
+            const password = document.getElementById('user-password').value;
+
+            if (!name || !email) { showToast('Name and Email are required.', 'error'); return; }
+            if (!id && !password) { showToast('Password is required for new users.', 'error'); return; }
+            if (password && password.length < 8) { showToast('Password must be at least 8 characters.', 'error'); return; }
+
+            try {
+                if (id) {
+                    // UPDATE existing user
+                    const updatePayload = { display_name: name, email, role, is_active: active };
+                    const { error: updateErr } = await supabase
+                        .from('admin_users').update(updatePayload).eq('id', id);
+                    if (updateErr) { showToast('Update failed: ' + updateErr.message, 'error'); return; }
+
+                    // Separately update password if provided
+                    if (password) {
+                        const { error: pwErr } = await supabase
+                            .rpc('admin_change_password', { p_admin_id: id, p_new_password: password });
+                        if (pwErr) { showToast('User saved but password update failed: ' + pwErr.message, 'error'); return; }
+                    }
+                    showToast('User updated successfully.');
+                } else {
+                    // INSERT new user — password is hashed server-side via trigger/RPC
+                    // We insert the raw password via a SECURITY DEFINER function call
+                    // First insert metadata, then set password via RPC
+                    const { data: inserted, error: insertErr } = await supabase
+                        .from('admin_users')
+                        .insert([{
+                            email,
+                            display_name: name,
+                            role,
+                            is_active: active,
+                            password_hash: 'PLACEHOLDER', // will be replaced immediately in next step
+                        }])
+                        .select('id')
+                        .single();
+
+                    if (insertErr) { showToast('Insert failed: ' + insertErr.message, 'error'); return; }
+
+                    // Now set the real bcrypt password via the SECURITY DEFINER RPC
+                    const { error: pwErr } = await supabase
+                        .rpc('admin_change_password', { p_admin_id: inserted.id, p_new_password: password });
+                    if (pwErr) {
+                        // Clean up the placeholder row
+                        await supabase.from('admin_users').delete().eq('id', inserted.id);
+                        showToast('User creation failed (password error): ' + pwErr.message, 'error');
+                        return;
+                    }
+                    showToast('New user created successfully.');
+                }
+
+                closeModal('user-modal');
+                await loadData();
+            } catch (err) {
+                showToast('Unexpected error: ' + err.message, 'error');
+            }
+        });
+
+        // ── Change password (separate modal) ─────────────────────────
+        document.getElementById('pw-save').addEventListener('click', async () => {
+            const adminId = document.getElementById('pw-admin-id').value;
+            const newPw = document.getElementById('new-password').value;
+            const confPw = document.getElementById('confirm-password').value;
+
+            if (!newPw || newPw.length < 8) { showToast('Password must be at least 8 characters.', 'error'); return; }
+            if (newPw !== confPw) { showToast('Passwords do not match.', 'error'); return; }
+
+            const { error } = await supabase
+                .rpc('admin_change_password', { p_admin_id: adminId, p_new_password: newPw });
+
+            if (error) { showToast('Password update failed: ' + error.message, 'error'); return; }
+            showToast('Password updated. New bcrypt hash saved.');
+            closeModal('pw-modal');
+        });
+
+        // ── Init ──────────────────────────────────────────────────────
+        (async () => {
+            const keyValid = await requireSecretKey();
+            if (!keyValid) throw new Error('Invalid key');
+            currentUser = await requireAuth();
+            initLogout();
+            initSidebar();
+            loadSidebarBrand();
+            initModalClose();
+            await loadData();
+        })();
+    </script>
+</body>
+
+</html>

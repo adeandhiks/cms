@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Settings — Admin CMS</title>
+    <meta name="admin-page-name" content="Settings" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="../css/admin.css" />
+    <style>
+        .settings-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+            max-width: 640px;
+            margin-bottom: 1.5rem;
+        }
+
+        .settings-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: .5rem;
+        }
+
+        .settings-card p {
+            color: var(--color-text-muted);
+            font-size: .88rem;
+            margin-bottom: 1.25rem;
+            line-height: 1.6;
+        }
+
+        .url-display {
+            background: #F8FAFC;
+            border: 1.5px solid var(--color-border);
+            border-radius: var(--radius-md);
+            padding: .85rem 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: .82rem;
+            word-break: break-all;
+            margin-bottom: 1rem;
+            color: var(--color-text);
+            position: relative;
+        }
+
+        .url-display .copy-btn {
+            position: absolute;
+            top: .5rem;
+            right: .5rem;
+            background: var(--color-primary);
+            color: #fff;
+            border: none;
+            padding: .3rem .7rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-size: .75rem;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .url-display .copy-btn:hover {
+            background: #1D4ED8;
+        }
+
+        .key-input-group {
+            display: flex;
+            gap: .75rem;
+            align-items: flex-end;
+        }
+
+        .key-input-group .form-group {
+            flex: 1;
+        }
+
+        .danger-zone {
+            border-color: #FECACA;
+            background: #FFF5F5;
+        }
+
+        .danger-zone h3 {
+            color: #DC2626;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="admin-layout">
+
+        <!-- ── SIDEBAR ── -->
+        <aside class="admin-sidebar" id="admin-sidebar" role="navigation" aria-label="Admin sidebar">
+            <div class="sidebar-brand">
+                <div class="sidebar-brand-name">AP Admin</div>
+                <div class="sidebar-brand-sub">Content Management System</div>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-section-label">Main</div>
+                <a href="dashboard.html"><span class="nav-icon">📊</span> Dashboard</a>
+                <div class="nav-section-label">Content</div>
+                <a href="profile.html"><span class="nav-icon">👤</span> Profile</a>
+                <a href="experience.html"><span class="nav-icon">💼</span> Experience</a>
+                <a href="lecturing.html"><span class="nav-icon">🎓</span> Lecturing</a>
+                <a href="research.html"><span class="nav-icon">📄</span> Research</a>
+                <a href="product.html"><span class="nav-icon">🚀</span> Products</a>
+                <a href="community-services.html"><span class="nav-icon">🤝</span> Community</a>
+                <div class="nav-section-label">Communication</div>
+                <a href="contact.html"><span class="nav-icon">📞</span> Contact Info</a>
+
+
+                <div class="nav-section-label">Administration</div>
+                <a href="users.html"><span class="nav-icon">👥</span> Users</a>
+                <a href="settings.html" class="active"><span class="nav-icon">⚙️</span> Settings</a>
+                <div class="nav-section-label">Site</div>
+                <a href="../index.html" target="_blank"><span class="nav-icon">🌐</span> View Website</a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="sidebar-user">
+                    <div class="sidebar-user-avatar" id="sidebar-user-avatar">A</div>
+                    <div>
+                        <div class="sidebar-user-name" id="sidebar-user-name">Admin</div>
+                        <div class="sidebar-user-role">Administrator</div>
+                    </div>
+                    <button class="btn-logout" id="btn-logout" title="Sign out">↩</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ── MAIN ── -->
+        <div class="admin-main">
+            <header class="admin-topbar" role="banner">
+                <div style="display:flex;align-items:center;gap:1rem;">
+                    <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle sidebar">☰</button>
+                    <div>
+                        <div class="topbar-title">Settings</div>
+                    </div>
+                </div>
+                <div class="topbar-actions">
+                    <span class="topbar-badge">CMS v1.0</span>
+                </div>
+            </header>
+
+            <div class="admin-content">
+                <div class="page-header-bar">
+                    <div>
+                        <h2>🔐 Admin Access Settings</h2>
+                        <p>Manage your secret admin URL for secure access</p>
+                    </div>
+                </div>
+
+                <!-- Current Admin URL -->
+                <div class="settings-card">
+                    <h3>Current Admin URL</h3>
+                    <p>Share this URL only with authorized administrators. Anyone with this link can access the admin
+                        login page.</p>
+                    <div class="url-display" id="current-url">
+                        Loading...
+                        <button class="copy-btn" id="copy-url-btn">📋 Copy</button>
+                    </div>
+                    <p style="font-size:.78rem;color:var(--color-text-muted);margin:0;">
+                        ⚠️ If you change the key, all current admin links will stop working. Make sure to share the new
+                        URL.
+                    </p>
+                </div>
+
+                <!-- Change Secret Key -->
+                <div class="settings-card">
+                    <h3>Change Secret Key</h3>
+                    <p>Update your admin access key. The old URL will immediately stop working after the change.</p>
+                    <form id="change-key-form" novalidate>
+                        <div class="form-group">
+                            <label for="new-key">New Secret Key</label>
+                            <input type="text" id="new-key" placeholder="e.g., my-super-secret-2024"
+                                pattern="[a-zA-Z0-9\-_]{6,64}"
+                                title="6-64 characters, letters, numbers, hyphens and underscores only" />
+                            <small
+                                style="display:block;margin-top:.3rem;color:var(--color-text-muted);font-size:.78rem;">
+                                6–64 characters. Letters, numbers, hyphens, underscores.
+                            </small>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="change-key-btn">
+                            🔄 Update Secret Key
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Generate Random Key -->
+                <div class="settings-card">
+                    <h3>Generate Random Key</h3>
+                    <p>Click the button below to generate a secure random key that you can use.</p>
+                    <div style="display:flex;gap:.75rem;align-items:center;">
+                        <input type="text" id="generated-key" readonly
+                            style="flex:1;padding:.65rem .9rem;border:1.5px solid var(--color-border);border-radius:var(--radius-md);font-family:monospace;font-size:.88rem;background:#F8FAFC;" />
+                        <button class="btn btn-outline" id="generate-key-btn">🎲 Generate</button>
+                    </div>
+                </div>
+
+                <!-- ── Frontend Theme ── -->
+                <div class="settings-card" style="margin-top:1.5rem;">
+                    <h3>🎨 Frontend Color Theme</h3>
+                    <p>Choose a color theme for your public portfolio website. Changes apply instantly after saving.</p>
+                    <div id="theme-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1rem;margin-top:1rem;">
+
+                        <div class="theme-swatch" data-theme="ocean" style="cursor:pointer;border-radius:.75rem;overflow:hidden;border:3px solid transparent;transition:all .3s;">
+                            <div style="height:64px;background:linear-gradient(135deg,#0F172A 0%,#1E3A5F 50%,#0C4A6E 100%);position:relative;">
+                                <div style="position:absolute;bottom:6px;left:8px;display:flex;gap:4px;">
+                                    <span style="width:14px;height:14px;border-radius:50%;background:#2563EB;border:2px solid rgba(255,255,255,.3);"></span>
+                                    <span style="width:14px;height:14px;border-radius:50%;background:#06B6D4;border:2px solid rgba(255,255,255,.3);"></span>
+                                </div>
+                            </div>
+                            <div style="padding:.5rem .6rem;background:#fff;font-size:.78rem;font-weight:600;color:#1E293B;text-align:center;">
+                                🌊 Ocean Blue
+                            </div>
+                        </div>
+
+                        <div class="theme-swatch" data-theme="emerald" style="cursor:pointer;border-radius:.75rem;overflow:hidden;border:3px solid transparent;transition:all .3s;">
+                            <div style="height:64px;background:linear-gradient(135deg,#064E3B 0%,#065F46 50%,#047857 100%);position:relative;">
+                                <div style="position:absolute;bottom:6px;left:8px;display:flex;gap:4px;">
+                                    <span style="width:14px;height:14px;border-radius:50%;background:#059669;border:2px solid rgba(255,255,255,.3);"></span>
+                                    <span style="width:14px;height:14px;border-radius:50%;background:#2DD4BF;border:2px solid rgba(255,255,255,.3);"></span>
+                                </div>
+                            </div>
+                            <div style="padding:.5rem .6rem;background:#fff;font-size:.78rem;font-weight:600;color:#1E293B;text-align:center;">
+                                💎 Emerald Luxe
+                            </div>
+                        </div>
+
+                        <div class="theme-swatch" data-theme="royal" style="cursor:pointer;border-radius:.75rem;overflow:hidden;border:3px solid transparent;transition:all .3s;">
+                            <div style="height:64px;background:linear-gradient(135deg,#1E1B4B 0%,#312E81 50%,#4C1D95 100%);position:relative;">
+                                <div style="position:absolute;bottom:6px;left:8px;display:flex;gap:4px;">
+                                    <span style="width:14px;height:14px;border-radius:50%;background:#7C3AED;border:2px solid rgba(255,255,255,.3);"></span>
+                                    <span style="width:14px;height:14px;border-radius:50%;background:#C084FC;border:2px solid rgba(255,255,255,.3);"></span>
+                                </div>
+                            </div>
+                            <div style="padding:.5rem .6rem;background:#fff;font-size:.78rem;font-weight:600;color:#1E293B;text-align:center;">
+                                👑 Royal Purple
+                            </div>
+                        </div>
+
+                        <div class="theme-swatch" data-theme="crimson" style="cursor:pointer;border-radius:.75rem;overflow:hidden;border:3px solid transparent;transition:all .3s;">
+                            <div style="height:64px;background:linear-gradient(135deg,#1C1917 0%,#44403C 50%,#7C2D12 100%);position:relative;">
+                                <div style="position:absolute;bottom:6px;left:8px;display:flex;gap:4px;">
+                                    <span style="width:14px;height:14px;border-radius:50%;background:#DC2626;border:2px solid rgba(255,255,255,.3);"></span>
+                                    <span style="width:14px;height:14px;border-radius:50%;background:#FB923C;border:2px solid rgba(255,255,255,.3);"></span>
+                                </div>
+                            </div>
+                            <div style="padding:.5rem .6rem;background:#fff;font-size:.78rem;font-weight:600;color:#1E293B;text-align:center;">
+                                🔥 Crimson Elegance
+                            </div>
+                        </div>
+
+                        <div class="theme-swatch" data-theme="golden" style="cursor:pointer;border-radius:.75rem;overflow:hidden;border:3px solid transparent;transition:all .3s;">
+                            <div style="height:64px;background:linear-gradient(135deg,#1C1917 0%,#292524 50%,#78350F 100%);position:relative;">
+                                <div style="position:absolute;bottom:6px;left:8px;display:flex;gap:4px;">
+                                    <span style="width:14px;height:14px;border-radius:50%;background:#D97706;border:2px solid rgba(255,255,255,.3);"></span>
+                                    <span style="width:14px;height:14px;border-radius:50%;background:#FBBF24;border:2px solid rgba(255,255,255,.3);"></span>
+                                </div>
+                            </div>
+                            <div style="padding:.5rem .6rem;background:#fff;font-size:.78rem;font-weight:600;color:#1E293B;text-align:center;">
+                                ✨ Golden Amber
+                            </div>
+                        </div>
+
+                        <div class="theme-swatch" data-theme="rose" style="cursor:pointer;border-radius:.75rem;overflow:hidden;border:3px solid transparent;transition:all .3s;">
+                            <div style="height:64px;background:linear-gradient(135deg,#1C1917 0%,#3F3F46 50%,#881337 100%);position:relative;">
+                                <div style="position:absolute;bottom:6px;left:8px;display:flex;gap:4px;">
+                                    <span style="width:14px;height:14px;border-radius:50%;background:#E11D48;border:2px solid rgba(255,255,255,.3);"></span>
+                                    <span style="width:14px;height:14px;border-radius:50%;background:#FDA4AF;border:2px solid rgba(255,255,255,.3);"></span>
+                                </div>
+                            </div>
+                            <div style="padding:.5rem .6rem;background:#fff;font-size:.78rem;font-weight:600;color:#1E293B;text-align:center;">
+                                🌹 Rose Gold
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="theme-status" style="margin-top:.75rem;font-size:.82rem;color:var(--color-text-muted);"></div>
+                </div>
+
+                <!-- ── Frontend Layout ── -->
+                <div class="settings-card" style="margin-top:1.5rem;">
+                    <h3>📐 Frontend Layout</h3>
+                    <p>Choose a layout style for your portfolio hero section and overall page structure.</p>
+                    <div id="layout-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-top:1rem;">
+
+                        <div class="layout-swatch" data-layout="classic" style="cursor:pointer;border-radius:.75rem;overflow:hidden;border:3px solid transparent;transition:all .3s;background:#fff;">
+                            <div style="height:80px;background:#F1F5F9;padding:.6rem;position:relative;">
+                                <div style="display:flex;gap:.5rem;height:100%;">
+                                    <div style="flex:1.2;display:flex;flex-direction:column;justify-content:center;gap:4px;">
+                                        <div style="width:40%;height:4px;background:#CBD5E1;border-radius:2px;"></div>
+                                        <div style="width:70%;height:6px;background:#64748B;border-radius:2px;"></div>
+                                        <div style="width:55%;height:3px;background:#CBD5E1;border-radius:2px;"></div>
+                                        <div style="display:flex;gap:3px;margin-top:2px;">
+                                            <div style="width:24px;height:8px;background:var(--color-primary,#2563EB);border-radius:4px;"></div>
+                                            <div style="width:24px;height:8px;background:#E2E8F0;border-radius:4px;"></div>
+                                        </div>
+                                    </div>
+                                    <div style="flex:.8;display:flex;align-items:center;justify-content:center;">
+                                        <div style="width:40px;height:40px;border-radius:50%;background:#CBD5E1;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="padding:.5rem .6rem;font-size:.78rem;font-weight:600;color:#1E293B;text-align:center;">
+                                📋 Classic
+                            </div>
+                        </div>
+
+                        <div class="layout-swatch" data-layout="centered" style="cursor:pointer;border-radius:.75rem;overflow:hidden;border:3px solid transparent;transition:all .3s;background:#fff;">
+                            <div style="height:80px;background:#F1F5F9;padding:.6rem;position:relative;">
+                                <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:4px;">
+                                    <div style="width:28px;height:28px;border-radius:50%;background:#CBD5E1;"></div>
+                                    <div style="width:50%;height:5px;background:#64748B;border-radius:2px;"></div>
+                                    <div style="width:40%;height:3px;background:#CBD5E1;border-radius:2px;"></div>
+                                    <div style="display:flex;gap:3px;">
+                                        <div style="width:20px;height:7px;background:var(--color-primary,#2563EB);border-radius:4px;"></div>
+                                        <div style="width:20px;height:7px;background:#E2E8F0;border-radius:4px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="padding:.5rem .6rem;font-size:.78rem;font-weight:600;color:#1E293B;text-align:center;">
+                                🎯 Centered
+                            </div>
+                        </div>
+
+                        <div class="layout-swatch" data-layout="minimal" style="cursor:pointer;border-radius:.75rem;overflow:hidden;border:3px solid transparent;transition:all .3s;background:#fff;">
+                            <div style="height:80px;background:#F1F5F9;padding:.6rem;position:relative;">
+                                <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:5px;">
+                                    <div style="width:30%;height:3px;background:#CBD5E1;border-radius:2px;"></div>
+                                    <div style="width:65%;height:8px;background:#64748B;border-radius:2px;"></div>
+                                    <div style="width:50%;height:3px;background:#CBD5E1;border-radius:2px;"></div>
+                                    <div style="display:flex;gap:3px;margin-top:2px;">
+                                        <div style="width:22px;height:7px;background:var(--color-primary,#2563EB);border-radius:4px;"></div>
+                                        <div style="width:22px;height:7px;background:#E2E8F0;border-radius:4px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="padding:.5rem .6rem;font-size:.78rem;font-weight:600;color:#1E293B;text-align:center;">
+                                ✨ Minimal
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="layout-status" style="margin-top:.75rem;font-size:.82rem;color:var(--color-text-muted);"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { supabase } from '../js/supabase.js';
+        import { requireSecretKey, requireAuth, initLogout, initSidebar, showToast, loadSidebarBrand } from './admin.js';
+
+        // ── Verify access ─────────────────────────────────────────
+        const keyValid = await requireSecretKey();
+        if (!keyValid) throw new Error('Invalid key');
+        await requireAuth();
+        initLogout();
+        initSidebar();
+        loadSidebarBrand();
+
+        // ── Get current key from sessionStorage ───────────────────
+        const currentKey = sessionStorage.getItem('admin_key');
+        const baseUrl = window.location.origin + window.location.pathname.replace('settings.html', 'login.html');
+
+        function updateUrlDisplay() {
+            const key = sessionStorage.getItem('admin_key');
+            const url = `${baseUrl}?key=${encodeURIComponent(key)}`;
+            document.getElementById('current-url').innerHTML = `
+                ${url}
+                <button class="copy-btn" id="copy-url-btn">📋 Copy</button>
+            `;
+            document.getElementById('copy-url-btn').addEventListener('click', () => {
+                navigator.clipboard.writeText(url).then(() => {
+                    showToast('URL copied to clipboard!');
+                }).catch(() => {
+                    // Fallback: select text
+                    const range = document.createRange();
+                    range.selectNodeContents(document.getElementById('current-url'));
+                    window.getSelection().removeAllRanges();
+                    window.getSelection().addRange(range);
+                    showToast('Select and copy the URL manually', 'error');
+                });
+            });
+        }
+        updateUrlDisplay();
+
+        // ── Change key form ───────────────────────────────────────
+        document.getElementById('change-key-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const newKey = document.getElementById('new-key').value.trim();
+            const btn = document.getElementById('change-key-btn');
+
+            if (!newKey || newKey.length < 6) {
+                showToast('Key must be at least 6 characters', 'error');
+                return;
+            }
+
+            if (!/^[a-zA-Z0-9\-_]+$/.test(newKey)) {
+                showToast('Key can only contain letters, numbers, hyphens, and underscores', 'error');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = 'Updating…';
+
+            try {
+                const { data, error } = await supabase.rpc('update_admin_key', {
+                    in_old_key: currentKey,
+                    in_new_key: newKey,
+                });
+
+                if (error) {
+                    showToast('Failed to update key: ' + error.message, 'error');
+                    return;
+                }
+
+                if (!data) {
+                    showToast('Failed to verify current key. Please re-login.', 'error');
+                    return;
+                }
+
+                // Update sessionStorage with new key
+                sessionStorage.setItem('admin_key', newKey);
+                showToast('Secret key updated successfully! Updating URL…');
+
+                // Update URL display
+                setTimeout(() => {
+                    updateUrlDisplay();
+                    // Update browser URL to use new key
+                    const newUrl = new URL(window.location.href);
+                    newUrl.searchParams.set('key', newKey);
+                    window.history.replaceState({}, '', newUrl);
+                    document.getElementById('new-key').value = '';
+                }, 500);
+
+            } catch (err) {
+                showToast('Error: ' + err.message, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '🔄 Update Secret Key';
+            }
+        });
+
+        // ── Generate random key ───────────────────────────────────
+        document.getElementById('generate-key-btn').addEventListener('click', () => {
+            const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+            const segments = [];
+            for (let s = 0; s < 4; s++) {
+                let seg = '';
+                for (let i = 0; i < 5; i++) {
+                    seg += chars[Math.floor(Math.random() * chars.length)];
+                }
+                segments.push(seg);
+            }
+            document.getElementById('generated-key').value = segments.join('-');
+        });
+
+        // ── Theme Selector ───────────────────────────────────────────
+        const swatches = document.querySelectorAll('.theme-swatch');
+        let currentTheme = 'ocean';
+
+        function highlightSwatch(theme) {
+            swatches.forEach(s => {
+                if (s.dataset.theme === theme) {
+                    s.style.borderColor = '#2563EB';
+                    s.style.boxShadow = '0 4px 16px rgba(37,99,235,.25)';
+                    s.style.transform = 'scale(1.03)';
+                } else {
+                    s.style.borderColor = 'transparent';
+                    s.style.boxShadow = 'none';
+                    s.style.transform = 'scale(1)';
+                }
+            });
+        }
+
+        // Load current theme from profile
+        (async () => {
+            const { data } = await supabase
+                .from('profile')
+                .select('theme')
+                .order('created_at', { ascending: false })
+                .limit(1)
+                .single();
+            if (data?.theme) {
+                currentTheme = data.theme;
+            }
+            highlightSwatch(currentTheme);
+            document.getElementById('theme-status').textContent = `Current theme: ${currentTheme.charAt(0).toUpperCase() + currentTheme.slice(1)}`;
+        })();
+
+        // Theme click handler
+        swatches.forEach(swatch => {
+            swatch.addEventListener('mouseenter', () => {
+                if (swatch.dataset.theme !== currentTheme) {
+                    swatch.style.borderColor = '#CBD5E1';
+                    swatch.style.transform = 'scale(1.02)';
+                }
+            });
+            swatch.addEventListener('mouseleave', () => {
+                if (swatch.dataset.theme !== currentTheme) {
+                    swatch.style.borderColor = 'transparent';
+                    swatch.style.transform = 'scale(1)';
+                }
+            });
+            swatch.addEventListener('click', async () => {
+                const theme = swatch.dataset.theme;
+                if (theme === currentTheme) return;
+
+                const status = document.getElementById('theme-status');
+                status.textContent = 'Saving theme…';
+
+                try {
+                    // Get profile ID
+                    const { data: profile } = await supabase
+                        .from('profile')
+                        .select('id')
+                        .order('created_at', { ascending: false })
+                        .limit(1)
+                        .single();
+
+                    if (!profile) {
+                        showToast('Profile not found. Please create a profile first.', 'error');
+                        return;
+                    }
+
+                    const { error } = await supabase
+                        .from('profile')
+                        .update({ theme })
+                        .eq('id', profile.id);
+
+                    if (error) {
+                        showToast('Failed to save theme: ' + error.message, 'error');
+                        status.textContent = 'Save failed. Try again.';
+                        return;
+                    }
+
+                    currentTheme = theme;
+                    highlightSwatch(theme);
+                    const themeName = theme.charAt(0).toUpperCase() + theme.slice(1);
+                    status.textContent = `✅ Theme set to: ${themeName}`;
+                    showToast(`Theme changed to ${themeName}! Refresh frontend to see changes.`);
+                } catch (err) {
+                    showToast('Error: ' + err.message, 'error');
+                    status.textContent = 'Error saving theme.';
+                }
+            });
+        });
+
+        // ── Layout Selector ──────────────────────────────────────────
+        const layoutSwatches = document.querySelectorAll('.layout-swatch');
+        let currentLayout = 'classic';
+
+        function highlightLayoutSwatch(layout) {
+            layoutSwatches.forEach(s => {
+                if (s.dataset.layout === layout) {
+                    s.style.borderColor = '#2563EB';
+                    s.style.boxShadow = '0 4px 16px rgba(37,99,235,.25)';
+                    s.style.transform = 'scale(1.03)';
+                } else {
+                    s.style.borderColor = 'transparent';
+                    s.style.boxShadow = 'none';
+                    s.style.transform = 'scale(1)';
+                }
+            });
+        }
+
+        // Load current layout from profile
+        (async () => {
+            const { data } = await supabase
+                .from('profile')
+                .select('layout')
+                .order('created_at', { ascending: false })
+                .limit(1)
+                .single();
+            if (data?.layout) {
+                currentLayout = data.layout;
+            }
+            highlightLayoutSwatch(currentLayout);
+            const layoutNames = { classic: 'Classic', centered: 'Centered', minimal: 'Minimal' };
+            document.getElementById('layout-status').textContent = `Current layout: ${layoutNames[currentLayout] || currentLayout}`;
+        })();
+
+        // Layout click handler
+        layoutSwatches.forEach(swatch => {
+            swatch.addEventListener('mouseenter', () => {
+                if (swatch.dataset.layout !== currentLayout) {
+                    swatch.style.borderColor = '#CBD5E1';
+                    swatch.style.transform = 'scale(1.02)';
+                }
+            });
+            swatch.addEventListener('mouseleave', () => {
+                if (swatch.dataset.layout !== currentLayout) {
+                    swatch.style.borderColor = 'transparent';
+                    swatch.style.transform = 'scale(1)';
+                }
+            });
+            swatch.addEventListener('click', async () => {
+                const layout = swatch.dataset.layout;
+                if (layout === currentLayout) return;
+
+                const layoutStatus = document.getElementById('layout-status');
+                layoutStatus.textContent = 'Saving layout…';
+
+                try {
+                    const { data: profile } = await supabase
+                        .from('profile')
+                        .select('id')
+                        .order('created_at', { ascending: false })
+                        .limit(1)
+                        .single();
+
+                    if (!profile) {
+                        showToast('Profile not found. Please create a profile first.', 'error');
+                        return;
+                    }
+
+                    const { error } = await supabase
+                        .from('profile')
+                        .update({ layout })
+                        .eq('id', profile.id);
+
+                    if (error) {
+                        showToast('Failed to save layout: ' + error.message, 'error');
+                        layoutStatus.textContent = 'Save failed. Try again.';
+                        return;
+                    }
+
+                    currentLayout = layout;
+                    highlightLayoutSwatch(layout);
+                    const layoutNames = { classic: 'Classic', centered: 'Centered', minimal: 'Minimal' };
+                    const layoutName = layoutNames[layout] || layout;
+                    layoutStatus.textContent = `✅ Layout set to: ${layoutName}`;
+                    showToast(`Layout changed to ${layoutName}! Refresh frontend to see changes.`);
+                } catch (err) {
+                    showToast('Error: ' + err.message, 'error');
+                    layoutStatus.textContent = 'Error saving layout.';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
