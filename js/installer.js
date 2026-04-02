@@ -70,6 +70,11 @@ function getProjectRef(url) {
     return m ? m[1] : null;
 }
 
+// ─── Helper: detect if running on localhost with proxy ───
+function hasLocalProxy() {
+    return location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+}
+
 // ─── Test Connection ──────────────────────────────────────
 async function testConnection() {
     const url = document.getElementById('supabase-url').value.trim();
@@ -116,18 +121,22 @@ async function testConnection() {
             return;
         }
 
-        // Test access token via local proxy → Management API
-        const mgmtRes = await fetch(`/api/supabase-project/${ref}`, {
-            headers: { 'Authorization': `Bearer ${accessToken}` }
-        });
-        if (mgmtRes.status === 401 || mgmtRes.status === 403) {
-            showConnectionStatus('error', '❌ Access Token is invalid. Generate one at supabase.com/dashboard/account/tokens');
-            return;
+        // Test access token — only via proxy on localhost
+        if (hasLocalProxy()) {
+            try {
+                const mgmtRes = await fetch(`/api/supabase-project/${ref}`, {
+                    headers: { 'Authorization': `Bearer ${accessToken}` }
+                });
+                if (mgmtRes.status === 401 || mgmtRes.status === 403) {
+                    showConnectionStatus('error', '❌ Access Token is invalid. Generate one at supabase.com/dashboard/account/tokens');
+                    return;
+                }
+            } catch (e) {
+                // Proxy not available, skip this check
+                console.warn('Proxy not available, skipping access token verification');
+            }
         }
-        if (!mgmtRes.ok) {
-            showConnectionStatus('error', '❌ Access Token could not access this project. Ensure the token belongs to the project owner.');
-            return;
-        }
+        // On static hosting: access token will be validated when SQL is executed
 
         connectionTested = true;
         supabaseAdmin = createClient(url, serviceKey, {
@@ -182,27 +191,57 @@ async function executeSql(url, serviceKey, sql) {
         throw new Error('Missing project reference or access token.');
     }
 
-    // Use local proxy → Supabase Management API to execute SQL
-    const mgmtRes = await fetch('/api/execute-sql', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ref, accessToken, query: sql })
-    });
-
-    if (mgmtRes.ok) return;
-
-    const resText = await mgmtRes.text();
-
-    // Treat "already exists" / "duplicate" as success
-    if (resText.includes('already exists') || resText.includes('duplicate') || resText.includes('42P07') || resText.includes('42710')) {
-        return;
+    // Helper: check if response is success or benign duplicate
+    async function handleResponse(res) {
+        if (res.ok) return true;
+        const resText = await res.text();
+        if (resText.includes('already exists') || resText.includes('duplicate') || resText.includes('42P07') || resText.includes('42710')) {
+            return true;
+        }
+        if (res.status === 401 || res.status === 403) {
+            throw new Error('Access Token is invalid or expired. Please generate a new one at supabase.com/dashboard/account/tokens');
+        }
+        throw new Error(`SQL execution failed (${res.status}): ${resText.substring(0, 300)}`);
     }
 
-    if (mgmtRes.status === 401 || mgmtRes.status === 403) {
-        throw new Error('Access Token is invalid or expired. Please generate a new one at supabase.com/dashboard/account/tokens');
+    // Strategy 1: Local proxy (localhost only)
+    if (hasLocalProxy()) {
+        try {
+            const proxyRes = await fetch('/api/execute-sql', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ref, accessToken, query: sql })
+            });
+            if (await handleResponse(proxyRes)) return;
+        } catch (proxyErr) {
+            // If proxy fails with auth/SQL error, rethrow immediately
+            if (proxyErr.message.includes('Access Token') || proxyErr.message.includes('SQL execution')) {
+                throw proxyErr;
+            }
+            // Otherwise proxy might be down, try direct API
+            console.warn('Proxy not available, trying direct API...');
+        }
     }
 
-    throw new Error(`SQL execution failed (${mgmtRes.status}): ${resText.substring(0, 300)}`);
+    // Strategy 2: Direct Management API call
+    try {
+        const directRes = await fetch(`https://api.supabase.com/v1/projects/${ref}/database/query`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            },
+            body: JSON.stringify({ query: sql })
+        });
+        if (await handleResponse(directRes)) return;
+    } catch (directErr) {
+        // CORS error or network failure
+        if (directErr.message.includes('Access Token') || directErr.message.includes('SQL execution')) {
+            throw directErr;
+        }
+        // CORS blocked — throw specific error to trigger manual fallback
+        throw new Error('CORS_BLOCKED: Cannot execute SQL from this host. Please use the manual SQL method below.');
+    }
 }
 
 // ─── Run Installation ─────────────────────────────────────
