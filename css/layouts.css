@@ -1,0 +1,157 @@
+/* ============================================================
+   layouts.css — Hero Layout Variants for Frontend
+   Applied via data-layout attribute on <html>
+   ============================================================ */
+
+/* ── Layout 1: Classic (Default) ──────────────────────────── */
+/* Default layout is defined in style.css — no override needed */
+
+/* ── Layout 2: Centered ───────────────────────────────────── */
+[data-layout="centered"] .hero-container {
+  grid-template-columns: 1fr;
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 7rem 0 5rem;
+}
+[data-layout="centered"] .hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+[data-layout="centered"] .hero-badge {
+  margin-left: auto;
+  margin-right: auto;
+}
+[data-layout="centered"] .hero-tagline {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+[data-layout="centered"] .hero-cta-group {
+  justify-content: center;
+}
+[data-layout="centered"] .hero-photo-side {
+  order: -1;
+  margin-bottom: var(--space-xl);
+}
+[data-layout="centered"] .hero-photo-wrapper {
+  width: 200px;
+  height: 200px;
+}
+[data-layout="centered"] .hero-title {
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+}
+
+/* About preview: stacked centered */
+[data-layout="centered"] .about-preview-grid {
+  grid-template-columns: 1fr;
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto;
+}
+[data-layout="centered"] .about-preview-text .section-label,
+[data-layout="centered"] .about-preview-text .section-title {
+  text-align: center;
+}
+[data-layout="centered"] .about-preview-text p {
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: var(--space-xl);
+}
+[data-layout="centered"] .about-preview-text .btn {
+  margin: 0 auto;
+}
+[data-layout="centered"] .about-photo-card {
+  order: -1;
+}
+
+/* ── Layout 3: Minimal (text-only, bold typography) ───────── */
+[data-layout="minimal"] .hero-container {
+  grid-template-columns: 1fr;
+  text-align: center;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 10rem 0 8rem;
+}
+[data-layout="minimal"] .hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+[data-layout="minimal"] .hero-photo-side {
+  display: none;
+}
+[data-layout="minimal"] .hero-badge {
+  margin-left: auto;
+  margin-right: auto;
+  font-size: .85rem;
+  padding: .5rem 1.5rem;
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.25);
+}
+[data-layout="minimal"] .hero-title {
+  font-size: clamp(3rem, 7vw, 5rem);
+  letter-spacing: -.04em;
+  line-height: 1.05;
+  margin-bottom: var(--space-xl);
+}
+[data-layout="minimal"] .hero-tagline {
+  font-size: 1.2rem;
+  max-width: 580px;
+  margin-left: auto;
+  margin-right: auto;
+  color: rgba(255,255,255,.65);
+  line-height: 1.8;
+}
+[data-layout="minimal"] .hero-cta-group {
+  justify-content: center;
+  margin-top: var(--space-lg);
+}
+[data-layout="minimal"] .hero-cta-group .btn {
+  padding: .85rem 2.2rem;
+  font-size: .95rem;
+}
+
+/* About preview: editorial feel */
+[data-layout="minimal"] .about-preview-grid {
+  grid-template-columns: 1fr;
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto;
+}
+[data-layout="minimal"] .about-preview-text .section-label,
+[data-layout="minimal"] .about-preview-text .section-title {
+  text-align: center;
+}
+[data-layout="minimal"] .about-preview-text p {
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: var(--space-xl);
+}
+[data-layout="minimal"] .about-preview-text .btn {
+  margin: 0 auto;
+}
+[data-layout="minimal"] .about-photo-card {
+  display: none;
+}
+
+/* Highlights grid: 4 columns for minimal */
+[data-layout="minimal"] .highlights-grid {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* Responsive overrides */
+@media (max-width: 768px) {
+  [data-layout="minimal"] .hero-container {
+    padding: 7rem 0 5rem;
+  }
+  [data-layout="minimal"] .hero-title {
+    font-size: clamp(2rem, 6vw, 3rem);
+  }
+  [data-layout="minimal"] .highlights-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

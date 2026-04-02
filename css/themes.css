@@ -1,0 +1,137 @@
+/* ============================================================
+   themes.css — Premium Color Themes for Frontend
+   Applied via data-theme attribute on <html>
+   ============================================================ */
+
+/* ── Theme 1: Ocean Blue (Default) ────────────────────────── */
+/* Default theme is defined in style.css :root — no override needed */
+
+/* ── Theme 2: Emerald Luxe ────────────────────────────────── */
+[data-theme="emerald"] {
+  --color-primary:      #059669;
+  --color-primary-light:#10B981;
+  --color-primary-dark: #047857;
+  --color-accent:       #2DD4BF;
+  --shadow-md: 0 4px 16px rgba(5,150,105,.08);
+  --shadow-lg: 0 8px 32px rgba(5,150,105,.12);
+  --shadow-xl: 0 20px 60px rgba(5,150,105,.15);
+}
+[data-theme="emerald"] .hero {
+  background: linear-gradient(135deg, #064E3B 0%, #065F46 50%, #047857 100%);
+}
+[data-theme="emerald"] .page-header {
+  background: linear-gradient(135deg, #064E3B 0%, #065F46 100%);
+}
+[data-theme="emerald"] .hero-bg-parallax {
+  background: radial-gradient(ellipse at 20% 50%, rgba(5,150,105,.35) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 20%, rgba(45,212,191,.25) 0%, transparent 50%);
+}
+[data-theme="emerald"] .hero-photo-ring { border-color: rgba(45,212,191,.4); }
+[data-theme="emerald"] .hero-photo-glow { background: radial-gradient(circle, rgba(5,150,105,.3) 0%, transparent 70%); }
+[data-theme="emerald"] .hero-img-placeholder { background: linear-gradient(135deg, rgba(5,150,105,.3), rgba(45,212,191,.2)); }
+[data-theme="emerald"] .section-label { color: #059669; background: rgba(5,150,105,.08); }
+[data-theme="emerald"] .footer { background: linear-gradient(135deg, #064E3B 0%, #065F46 100%); }
+
+/* ── Theme 3: Royal Purple ────────────────────────────────── */
+[data-theme="royal"] {
+  --color-primary:      #7C3AED;
+  --color-primary-light:#8B5CF6;
+  --color-primary-dark: #6D28D9;
+  --color-accent:       #C084FC;
+  --shadow-md: 0 4px 16px rgba(124,58,237,.08);
+  --shadow-lg: 0 8px 32px rgba(124,58,237,.12);
+  --shadow-xl: 0 20px 60px rgba(124,58,237,.15);
+}
+[data-theme="royal"] .hero {
+  background: linear-gradient(135deg, #1E1B4B 0%, #312E81 50%, #4C1D95 100%);
+}
+[data-theme="royal"] .page-header {
+  background: linear-gradient(135deg, #1E1B4B 0%, #312E81 100%);
+}
+[data-theme="royal"] .hero-bg-parallax {
+  background: radial-gradient(ellipse at 20% 50%, rgba(124,58,237,.35) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 20%, rgba(192,132,252,.25) 0%, transparent 50%);
+}
+[data-theme="royal"] .hero-photo-ring { border-color: rgba(192,132,252,.4); }
+[data-theme="royal"] .hero-photo-glow { background: radial-gradient(circle, rgba(124,58,237,.3) 0%, transparent 70%); }
+[data-theme="royal"] .hero-img-placeholder { background: linear-gradient(135deg, rgba(124,58,237,.3), rgba(192,132,252,.2)); }
+[data-theme="royal"] .section-label { color: #7C3AED; background: rgba(124,58,237,.08); }
+[data-theme="royal"] .footer { background: linear-gradient(135deg, #1E1B4B 0%, #312E81 100%); }
+
+/* ── Theme 4: Crimson Elegance ────────────────────────────── */
+[data-theme="crimson"] {
+  --color-primary:      #DC2626;
+  --color-primary-light:#EF4444;
+  --color-primary-dark: #B91C1C;
+  --color-accent:       #FB923C;
+  --shadow-md: 0 4px 16px rgba(220,38,38,.08);
+  --shadow-lg: 0 8px 32px rgba(220,38,38,.12);
+  --shadow-xl: 0 20px 60px rgba(220,38,38,.15);
+}
+[data-theme="crimson"] .hero {
+  background: linear-gradient(135deg, #1C1917 0%, #44403C 50%, #7C2D12 100%);
+}
+[data-theme="crimson"] .page-header {
+  background: linear-gradient(135deg, #1C1917 0%, #44403C 100%);
+}
+[data-theme="crimson"] .hero-bg-parallax {
+  background: radial-gradient(ellipse at 20% 50%, rgba(220,38,38,.35) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 20%, rgba(251,146,60,.25) 0%, transparent 50%);
+}
+[data-theme="crimson"] .hero-photo-ring { border-color: rgba(251,146,60,.4); }
+[data-theme="crimson"] .hero-photo-glow { background: radial-gradient(circle, rgba(220,38,38,.3) 0%, transparent 70%); }
+[data-theme="crimson"] .hero-img-placeholder { background: linear-gradient(135deg, rgba(220,38,38,.3), rgba(251,146,60,.2)); }
+[data-theme="crimson"] .section-label { color: #DC2626; background: rgba(220,38,38,.08); }
+[data-theme="crimson"] .footer { background: linear-gradient(135deg, #1C1917 0%, #44403C 100%); }
+
+/* ── Theme 5: Golden Amber ────────────────────────────────── */
+[data-theme="golden"] {
+  --color-primary:      #D97706;
+  --color-primary-light:#F59E0B;
+  --color-primary-dark: #B45309;
+  --color-accent:       #FBBF24;
+  --shadow-md: 0 4px 16px rgba(217,119,6,.08);
+  --shadow-lg: 0 8px 32px rgba(217,119,6,.12);
+  --shadow-xl: 0 20px 60px rgba(217,119,6,.15);
+}
+[data-theme="golden"] .hero {
+  background: linear-gradient(135deg, #1C1917 0%, #292524 50%, #78350F 100%);
+}
+[data-theme="golden"] .page-header {
+  background: linear-gradient(135deg, #1C1917 0%, #292524 100%);
+}
+[data-theme="golden"] .hero-bg-parallax {
+  background: radial-gradient(ellipse at 20% 50%, rgba(217,119,6,.35) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 20%, rgba(251,191,36,.25) 0%, transparent 50%);
+}
+[data-theme="golden"] .hero-photo-ring { border-color: rgba(251,191,36,.4); }
+[data-theme="golden"] .hero-photo-glow { background: radial-gradient(circle, rgba(217,119,6,.3) 0%, transparent 70%); }
+[data-theme="golden"] .hero-img-placeholder { background: linear-gradient(135deg, rgba(217,119,6,.3), rgba(251,191,36,.2)); }
+[data-theme="golden"] .section-label { color: #D97706; background: rgba(217,119,6,.08); }
+[data-theme="golden"] .footer { background: linear-gradient(135deg, #1C1917 0%, #292524 100%); }
+
+/* ── Theme 6: Rose Gold ───────────────────────────────────── */
+[data-theme="rose"] {
+  --color-primary:      #E11D48;
+  --color-primary-light:#FB7185;
+  --color-primary-dark: #BE123C;
+  --color-accent:       #FDA4AF;
+  --shadow-md: 0 4px 16px rgba(225,29,72,.08);
+  --shadow-lg: 0 8px 32px rgba(225,29,72,.12);
+  --shadow-xl: 0 20px 60px rgba(225,29,72,.15);
+}
+[data-theme="rose"] .hero {
+  background: linear-gradient(135deg, #1C1917 0%, #3F3F46 50%, #881337 100%);
+}
+[data-theme="rose"] .page-header {
+  background: linear-gradient(135deg, #1C1917 0%, #3F3F46 100%);
+}
+[data-theme="rose"] .hero-bg-parallax {
+  background: radial-gradient(ellipse at 20% 50%, rgba(225,29,72,.35) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 20%, rgba(253,164,175,.25) 0%, transparent 50%);
+}
+[data-theme="rose"] .hero-photo-ring { border-color: rgba(253,164,175,.4); }
+[data-theme="rose"] .hero-photo-glow { background: radial-gradient(circle, rgba(225,29,72,.3) 0%, transparent 70%); }
+[data-theme="rose"] .hero-img-placeholder { background: linear-gradient(135deg, rgba(225,29,72,.3), rgba(253,164,175,.2)); }
+[data-theme="rose"] .section-label { color: #E11D48; background: rgba(225,29,72,.08); }
+[data-theme="rose"] .footer { background: linear-gradient(135deg, #1C1917 0%, #3F3F46 100%); }
