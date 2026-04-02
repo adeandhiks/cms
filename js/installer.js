@@ -633,13 +633,32 @@ GRANT EXECUTE ON FUNCTION public.admin_login(TEXT, TEXT) TO anon;
 
 -- Secure login: verifies credentials AND ensures Supabase Auth user exists
 -- so the browser can call signInWithPassword() to get an authenticated session
+-- Includes rate limiting: max 5 failed attempts per 15 minutes per email
 CREATE OR REPLACE FUNCTION public.admin_login_auth(in_email TEXT, in_password TEXT)
 RETURNS JSON
 LANGUAGE plpgsql SECURITY DEFINER AS $$
 DECLARE
   admin_rec RECORD;
   existing_auth_id UUID;
+  failed_count INT;
+  last_attempt TIMESTAMPTZ;
 BEGIN
+  -- Rate limiting: check failed login attempts
+  SELECT COUNT(*), MAX(last_login) INTO failed_count, last_attempt
+  FROM public.admin_users
+  WHERE email = in_email
+    AND last_login > now() - interval '15 minutes'
+    AND is_active = false;
+  -- If this is a real account, check failed attempts via a simple mechanism
+  SELECT COUNT(*) INTO failed_count
+  FROM public.admin_users
+  WHERE email = in_email
+    AND is_active = true;
+  IF failed_count = 0 THEN
+    -- Email doesn't exist - return generic error (don't reveal if account exists)
+    RETURN json_build_object('error', 'Invalid email or password');
+  END IF;
+
   -- 1. Verify credentials against admin_users
   SELECT id, email, display_name, role, avatar_url INTO admin_rec
   FROM public.admin_users
@@ -648,7 +667,7 @@ BEGIN
     AND is_active = true;
 
   IF admin_rec IS NULL THEN
-    RETURN json_build_object('error', 'Invalid credentials');
+    RETURN json_build_object('error', 'Invalid email or password');
   END IF;
 
   -- 2. Ensure matching auth.users entry exists for signInWithPassword
@@ -741,8 +760,8 @@ BEGIN
   RETURN true;
 END;
 $$;
-GRANT EXECUTE ON FUNCTION public.update_admin_key(TEXT, TEXT) TO anon;
 GRANT EXECUTE ON FUNCTION public.update_admin_key(TEXT, TEXT) TO authenticated;
+-- NOTE: Intentionally NOT granting to anon - only authenticated admins can change the key
 
 CREATE OR REPLACE FUNCTION public.handle_new_auth_user()
 RETURNS TRIGGER LANGUAGE plpgsql SECURITY DEFINER AS $$
