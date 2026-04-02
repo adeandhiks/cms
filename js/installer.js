@@ -223,7 +223,13 @@ async function executeSql(url, serviceKey, sql) {
         }
     }
 
-    // Strategy 2: Direct Management API call
+    // Strategy 2: On non-localhost, direct API will always fail (CORS)
+    // Skip it entirely and go straight to manual fallback — no security risk
+    if (!hasLocalProxy()) {
+        throw new Error('MANUAL_MODE: Running on static hosting. Please use the manual SQL method below.');
+    }
+
+    // Strategy 3: Direct Management API call (only reached if proxy failed on localhost)
     try {
         const directRes = await fetch(`https://api.supabase.com/v1/projects/${ref}/database/query`, {
             method: 'POST',
@@ -235,12 +241,10 @@ async function executeSql(url, serviceKey, sql) {
         });
         if (await handleResponse(directRes)) return;
     } catch (directErr) {
-        // CORS error or network failure
         if (directErr.message.includes('Access Token') || directErr.message.includes('SQL execution')) {
             throw directErr;
         }
-        // CORS blocked — throw specific error to trigger manual fallback
-        throw new Error('CORS_BLOCKED: Cannot execute SQL from this host. Please use the manual SQL method below.');
+        throw new Error('Cannot execute SQL. Please use the manual SQL method below.');
     }
 }
 
@@ -270,60 +274,71 @@ async function runInstallation() {
         document.getElementById('progress-bar').style.width = '100%';
         onInstallSuccess();
     } catch (err) {
-        console.error('Full SQL execution failed, trying step-by-step:', err);
+        const isManualMode = err.message.includes('MANUAL_MODE') || err.message.includes('CORS');
 
-        // Step-by-step execution
-        const steps = [
-            { key: 'extensions', sql: getSqlExtensions(), progress: 14 },
-            { key: 'tables', sql: getSqlTables(), progress: 28 },
-            { key: 'rls', sql: getSqlRLS(), progress: 42 },
-            { key: 'rpcs', sql: getSqlRPCs(), progress: 56 },
-            { key: 'storage', sql: getSqlStorage(), progress: 70 },
-            { key: 'migrations', sql: getSqlMigrations(), progress: 85 },
-            { key: 'seed', sql: getSqlSeedData(), progress: 100 },
-        ];
+        // If on static hosting, skip step-by-step (all will fail the same way)
+        if (!isManualMode) {
+            console.warn('Full SQL execution failed, trying step-by-step:', err.message);
 
-        let allSuccess = true;
+            // Step-by-step execution
+            const steps = [
+                { key: 'extensions', sql: getSqlExtensions(), progress: 14 },
+                { key: 'tables', sql: getSqlTables(), progress: 28 },
+                { key: 'rls', sql: getSqlRLS(), progress: 42 },
+                { key: 'rpcs', sql: getSqlRPCs(), progress: 56 },
+                { key: 'storage', sql: getSqlStorage(), progress: 70 },
+                { key: 'migrations', sql: getSqlMigrations(), progress: 85 },
+                { key: 'seed', sql: getSqlSeedData(), progress: 100 },
+            ];
 
-        for (const step of steps) {
-            setProgressStep(step.key, 'running');
-            try {
-                await executeSql(url, serviceKey, step.sql);
-                setProgressStep(step.key, 'done');
-                document.getElementById('progress-bar').style.width = step.progress + '%';
-            } catch (stepErr) {
-                const msg = stepErr.message || String(stepErr);
-                if (msg.includes('already exists') || msg.includes('duplicate') || msg.includes('42P07') || msg.includes('42710')) {
+            let allSuccess = true;
+
+            for (const step of steps) {
+                setProgressStep(step.key, 'running');
+                try {
+                    await executeSql(url, serviceKey, step.sql);
                     setProgressStep(step.key, 'done');
                     document.getElementById('progress-bar').style.width = step.progress + '%';
-                    continue;
+                } catch (stepErr) {
+                    const msg = stepErr.message || String(stepErr);
+                    if (msg.includes('already exists') || msg.includes('duplicate') || msg.includes('42P07') || msg.includes('42710')) {
+                        setProgressStep(step.key, 'done');
+                        document.getElementById('progress-bar').style.width = step.progress + '%';
+                        continue;
+                    }
+                    setProgressStep(step.key, 'error');
+                    allSuccess = false;
+                    break;
                 }
-                setProgressStep(step.key, 'error');
-                allSuccess = false;
-                break;
+            }
+
+            if (allSuccess) {
+                onInstallSuccess();
+                return;
             }
         }
 
-        if (allSuccess) {
-            onInstallSuccess();
-        } else {
-            // Show manual fallback
-            document.getElementById('copy-sql-fallback').classList.add('show');
-            btnRun.disabled = false;
-            btnRun.innerHTML = '🔄 Retry Installation';
-            btnBack.disabled = false;
+        // Show manual fallback (static hosting or step-by-step failed)
+        document.getElementById('copy-sql-fallback').classList.add('show');
+        btnRun.disabled = false;
+        btnRun.innerHTML = '🔄 Retry Installation';
+        btnBack.disabled = false;
 
-            const btnNext = document.getElementById('btn-step3-next');
-            btnNext.style.display = '';
-            btnNext.textContent = 'I\'ve Run the SQL Manually → Continue';
+        const btnNext = document.getElementById('btn-step3-next');
+        btnNext.style.display = '';
+        btnNext.textContent = 'I\'ve Run the SQL Manually → Continue';
 
-            errorEl.style.display = 'block';
-            errorEl.innerHTML = `<strong>⚠️ Automatic execution not available</strong><br>
-                Your Supabase project doesn't allow direct SQL execution from the browser.<br>
-                <strong>Solution:</strong> Click <strong>"Copy Full SQL"</strong> above, then paste and run it in your 
-                <a href="https://supabase.com/dashboard" target="_blank" style="color:inherit;text-decoration:underline;">Supabase Dashboard</a> → <strong>SQL Editor</strong> → New Query → Paste → Run.<br>
-                After that, click <strong>"I've Run the SQL Manually"</strong> to continue.`;
-        }
+        const ref = getProjectRef(url);
+        const sqlEditorUrl = ref ? `https://supabase.com/dashboard/project/${ref}/sql/new` : 'https://supabase.com/dashboard';
+
+        errorEl.style.display = 'block';
+        errorEl.innerHTML = `<strong>⚠️ Manual installation required</strong><br>
+            This site is hosted on a static server that cannot execute SQL directly.<br>
+            <strong>Steps:</strong><br>
+            1. Click <strong>"Copy Full SQL"</strong> above<br>
+            2. Open <a href="${sqlEditorUrl}" target="_blank" style="color:inherit;text-decoration:underline;font-weight:bold;">Supabase SQL Editor ↗</a><br>
+            3. Paste the SQL and click <strong>Run</strong><br>
+            4. Come back here and click <strong>"I've Run the SQL Manually"</strong>`;
     }
 }
 
