@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Academic Portfolio</title>
+  <meta name="description" content="Personal academic portfolio — researcher, innovator, and academic professional." />
+  <meta property="og:title" content="Academic Portfolio" />
+  <meta property="og:description" content="Explore research, products, and professional experience." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/themes.css" />
+  <link rel="stylesheet" href="css/layouts.css" />
+</head>
+
+<body class="page-home">
+
+  <!-- ── INSTALL DETECTION ── -->
+  <script>
+    (function() {
+      var config = null;
+      try { config = JSON.parse(localStorage.getItem('supabase_config')); } catch(e) {}
+      if (!config || !config.installed) {
+        window.location.href = 'install.html';
+      }
+    })();
+  </script>
+
+  <!-- ── INSTALL WARNING BANNER ── -->
+  <div id="install-warning-banner" style="display:none;position:fixed;top:0;left:0;right:0;z-index:10000;background:linear-gradient(135deg,#F59E0B,#D97706);color:#fff;padding:.85rem 1.5rem;font-size:.88rem;text-align:center;box-shadow:0 4px 16px rgba(0,0,0,.15);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+    <div style="display:flex;align-items:center;justify-content:center;gap:.75rem;flex-wrap:wrap;">
+      <span>⚠️ <strong>Security Warning:</strong> File <code style="background:rgba(0,0,0,.15);padding:1px 6px;border-radius:3px;">install.html</code> masih ada. Untuk keamanan, segera hapus atau rename file tersebut.</span>
+      <button onclick="document.getElementById('install-warning-banner').style.display='none';document.body.style.paddingTop='0';" style="background:rgba(0,0,0,.2);color:#fff;border:none;padding:4px 12px;border-radius:4px;cursor:pointer;font-size:.82rem;">✕ Dismiss</button>
+    </div>
+  </div>
+  <script>
+    (function() {
+      var config = null;
+      try { config = JSON.parse(localStorage.getItem('supabase_config')); } catch(e) {}
+      if (config && config.installed) {
+        fetch('install.html', { method: 'HEAD' })
+          .then(function(res) {
+            if (res.ok) {
+              var banner = document.getElementById('install-warning-banner');
+              if (banner) {
+                banner.style.display = 'block';
+                document.body.style.paddingTop = '52px';
+              }
+            }
+          })
+          .catch(function() { /* file not found = OK, no banner needed */ });
+      }
+    })();
+  </script>
+
+  <!-- ── NAVBAR ── -->
+  <nav id="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container nav-inner">
+      <a href="index.html" class="nav-logo" aria-label="Home"><span class="nav-logo-text">…</span><span>.</span></a>
+      <ul id="nav-links" role="list">
+        <li><a href="#section-hero" class="nav-scroll active">Home</a></li>
+        <li><a href="#section-about" class="nav-scroll">About</a></li>
+        <li><a href="#section-lecturing" class="nav-scroll">Lecturing</a></li>
+        <li><a href="#section-research" class="nav-scroll">Research</a></li>
+        <li><a href="#section-products" class="nav-scroll">Product</a></li>
+        <li><a href="#section-community" class="nav-scroll">Community</a></li>
+        <li><a href="#section-contact" class="nav-scroll">Contact</a></li>
+      </ul>
+      <button id="menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <section id="section-hero" class="hero" aria-label="Hero section">
+    <div class="hero-bg-parallax"></div>
+    <div class="hero-dots"></div>
+    <div class="container hero-container">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="hero-badge-dot"></span>
+          <span id="hero-badge-text">Academic Researcher & Innovator</span>
+        </div>
+        <h1 class="hero-title">
+          Hi, I'm <span class="name-accent" id="hero-name"></span>
+        </h1>
+        <p class="hero-tagline" id="hero-title">Advancing knowledge through research, innovation, and meaningful
+          academic contributions.</p>
+        <p class="hero-tagline" id="hero-tagline" style="display:none;"></p>
+        <div class="hero-cta-group">
+          <a href="#section-research" class="btn btn-primary nav-scroll">View Research</a>
+          <a href="#section-contact" class="btn btn-ghost nav-scroll">Get in Touch</a>
+        </div>
+      </div>
+      <div class="hero-photo-side">
+        <div class="hero-photo-wrapper">
+          <div class="hero-photo-ring"></div>
+          <div class="hero-photo-glow"></div>
+          <div class="hero-img-placeholder" id="hero-photo-placeholder" aria-label="Profile photo">🎓</div>
+          <img id="hero-photo" class="hero-img" src="" alt="Profile photo" style="opacity:0;position:absolute;" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ABOUT PREVIEW ── -->
+  <section id="section-about" class="section section-light about-preview" aria-labelledby="about-preview-heading">
+    <div class="container">
+      <div class="about-preview-grid">
+        <div class="about-preview-text" data-aos="fade-right">
+          <span class="section-label">About Me</span>
+          <h2 class="section-title" id="about-preview-heading">Academic Professional &amp; Researcher</h2>
+          <p id="about-preview-bio">A dedicated academic professional committed to advancing knowledge through rigorous research, innovation, and impactful collaboration across disciplines.</p>
+          <a href="about.html" class="btn btn-outline">Learn More →</a>
+        </div>
+        <div class="about-photo-card" data-aos="fade-left">
+          <img id="about-preview-photo" src="" alt="Profile photo" style="opacity:0;position:absolute;width:160px;height:160px;border-radius:50%;object-fit:cover;margin:0 auto 1.5rem;" />
+          <div id="about-preview-photo-placeholder"
+            style="width:160px;height:160px;border-radius:50%;background:linear-gradient(135deg,rgba(37,99,235,.15),rgba(6,182,212,.1));display:flex;align-items:center;justify-content:center;font-size:4rem;margin:0 auto 1.5rem;">
+            🎓</div>
+          <p class="about-name" id="about-preview-name"></p>
+          <p class="about-role">Academic Researcher</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── HIGHLIGHTS ── -->
+  <section id="section-highlights" class="section highlights" aria-labelledby="highlights-heading">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <span class="section-label" style="background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);">By the
+          Numbers</span>
+        <h2 class="section-title" id="highlights-heading" style="color:#fff;">Research &amp; Impact</h2>
+      </div>
+      <div class="highlights-grid">
+        <div class="highlight-card" data-aos="fade-up" data-aos-delay="0">
+          <div class="highlight-number" data-counter="0" data-suffix="+" id="pub-count">0+</div>
+          <div class="highlight-label">Publications</div>
+        </div>
+        <div class="highlight-card" data-aos="fade-up" data-aos-delay="100">
+          <div class="highlight-number" data-counter="0" data-suffix="+" id="lect-count">0+</div>
+          <div class="highlight-label">Courses Taught</div>
+        </div>
+        <div class="highlight-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="highlight-number" data-counter="0" data-suffix="+" id="prod-count">0+</div>
+          <div class="highlight-label">Products &amp; IP</div>
+        </div>
+        <div class="highlight-card" data-aos="fade-up" data-aos-delay="300">
+          <div class="highlight-number" data-counter="0" data-suffix="+" id="cs-count">0+</div>
+          <div class="highlight-label">Community Services</div>
+        </div>
+        <div class="highlight-card" data-aos="fade-up" data-aos-delay="400">
+          <div class="highlight-number" data-counter="3" data-suffix="+">3+</div>
+          <div class="highlight-label">Years of Experience</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FEATURED LECTURING ── -->
+  <section id="section-lecturing" class="section section-light" aria-labelledby="featured-lecturing-heading">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <span class="section-label">Lecturing</span>
+        <h2 class="section-title" id="featured-lecturing-heading">Teaching & Courses</h2>
+        <p class="section-subtitle">Academic courses and teaching activities across various programs.</p>
+      </div>
+      <div class="cards-grid" id="featured-lecturing">
+        <div class="empty-state">Loading courses…</div>
+      </div>
+      <div class="text-center" style="margin-top:2.5rem;" data-aos="fade-up">
+        <a href="lecturing.html" class="btn btn-outline">View All Courses →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FEATURED RESEARCH ── -->
+  <section id="section-research" class="section section-soft" aria-labelledby="featured-research-heading">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <span class="section-label">Research</span>
+        <h2 class="section-title" id="featured-research-heading">Featured Publications</h2>
+        <p class="section-subtitle">Latest scientific contributions and academic publications.</p>
+      </div>
+      <div class="cards-grid" id="featured-research">
+        <!-- Dynamically loaded -->
+        <div class="empty-state">Loading publications…</div>
+      </div>
+      <div class="text-center" style="margin-top:2.5rem;" data-aos="fade-up">
+        <a href="research.html" class="btn btn-outline">View All Research →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FEATURED PRODUCTS ── -->
+  <section id="section-products" class="section section-light" aria-labelledby="featured-products-heading">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <span class="section-label">Products</span>
+        <h2 class="section-title" id="featured-products-heading">Featured Works</h2>
+        <p class="section-subtitle">Innovative products and intellectual property developed.</p>
+      </div>
+      <div class="cards-grid" id="featured-products">
+        <div class="empty-state">Loading products…</div>
+      </div>
+      <div class="text-center" style="margin-top:2.5rem;" data-aos="fade-up">
+        <a href="product.html" class="btn btn-outline">View All Products →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FEATURED COMMUNITY SERVICES ── -->
+  <section id="section-community" class="section section-soft" aria-labelledby="featured-community-heading">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <span class="section-label">Community</span>
+        <h2 class="section-title" id="featured-community-heading">Community Services</h2>
+        <p class="section-subtitle">Social contributions, volunteer work, and community engagement.</p>
+      </div>
+      <div class="cards-grid" id="featured-community">
+        <div class="empty-state">Loading activities…</div>
+      </div>
+      <div class="text-center" style="margin-top:2.5rem;" data-aos="fade-up">
+        <a href="community-services.html" class="btn btn-outline">View All Activities →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CONTACT PREVIEW ── -->
+  <section id="section-contact" class="section contact-preview" aria-labelledby="contact-preview-heading">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <span class="section-label">Contact</span>
+        <h2 class="section-title" id="contact-preview-heading">Get in Touch</h2>
+        <p class="section-subtitle">Let's collaborate, connect, or just have a conversation.</p>
+      </div>
+      <div class="contact-preview-grid">
+        <!-- Card 1: Info -->
+        <div class="contact-preview-card" data-aos="fade-up" data-aos-delay="0">
+          <div class="contact-preview-icon">✉️</div>
+          <h3>Email</h3>
+          <p><a href="#" id="contact-preview-email">adam@example.com</a></p>
+        </div>
+        <!-- Card 2: LinkedIn -->
+        <div class="contact-preview-card" data-aos="fade-up" data-aos-delay="100">
+          <div class="contact-preview-icon">💼</div>
+          <h3>LinkedIn</h3>
+          <p><a href="#" id="contact-preview-linkedin" target="_blank" rel="noopener">View Profile</a></p>
+        </div>
+        <!-- Card 3: GitHub -->
+        <div class="contact-preview-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="contact-preview-icon">💻</div>
+          <h3>GitHub</h3>
+          <p><a href="#" id="contact-preview-github" target="_blank" rel="noopener">View Profile</a></p>
+        </div>
+        <!-- Card 4: Location -->
+        <div class="contact-preview-card" data-aos="fade-up" data-aos-delay="300">
+          <div class="contact-preview-icon">📍</div>
+          <h3>Location</h3>
+          <p id="contact-preview-address">Jakarta, Indonesia</p>
+        </div>
+      </div>
+      <div class="text-center" style="margin-top:2.5rem;" data-aos="fade-up">
+        <a href="contact.html" class="btn btn-primary">Contact Me →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <p class="brand-name footer-brand-name">Portfolio</p>
+          <p class="footer-brand-desc">Academic researcher and innovator dedicated to advancing knowledge through rigorous research and meaningful collaboration.</p>
+        </div>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <h4>Navigation</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="lecturing.html">Lecturing</a></li>
+            <li><a href="research.html">Research</a></li>
+            <li><a href="product.html">Product</a></li>
+            <li><a href="community-services.html">Community</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="footer-contact">
+          <h4>Connect</h4>
+          <p><a href="#" id="footer-email">email@example.com</a></p>
+          <p><a href="#" id="footer-linkedin" target="_blank" rel="noopener">LinkedIn Profile</a></p>
+          <p><a href="#" id="footer-github" target="_blank" rel="noopener">GitHub Profile</a></p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copyright-text">&copy; 2024. All rights reserved.</p>
+        <div class="footer-social" aria-label="Social media links">
+          <a href="#" id="footer-linkedin-icon" target="_blank" rel="noopener" aria-label="LinkedIn">in</a>
+          <a href="#" id="footer-github-icon" target="_blank" rel="noopener" aria-label="GitHub">gh</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="js/animations.js" defer></script>
+  <script type="module" src="js/main.js?v=2"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // ── Photo show/hide helper ──
+      const heroImg = document.getElementById('hero-photo');
+      const heroPlaceholder = document.getElementById('hero-photo-placeholder');
+      if (heroImg) {
+        heroImg.addEventListener('load', () => {
+          if (heroImg.src && !heroImg.src.endsWith('undefined')) {
+            heroImg.style.display = 'block';
+            if (heroPlaceholder) heroPlaceholder.style.display = 'none';
+          }
+        });
+      }
+      const aboutImg = document.getElementById('about-preview-photo');
+      const aboutPlaceholder = document.getElementById('about-preview-photo-placeholder');
+      if (aboutImg) {
+        aboutImg.addEventListener('load', () => {
+          if (aboutImg.src && !aboutImg.src.endsWith('undefined')) {
+            aboutImg.style.display = 'block';
+            if (aboutPlaceholder) aboutPlaceholder.style.display = 'none';
+          }
+        });
+      }
+
+      // ── Smooth Scroll for nav links ──
+      const navScrollLinks = document.querySelectorAll('.nav-scroll');
+      navScrollLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetId = link.getAttribute('href');
+          const targetEl = document.querySelector(targetId);
+          if (targetEl) {
+            const navHeight = document.getElementById('navbar').offsetHeight;
+            const targetPos = targetEl.getBoundingClientRect().top + window.pageYOffset - navHeight;
+            window.scrollTo({ top: targetPos, behavior: 'smooth' });
+          }
+          // Close mobile menu if open
+          const navLinks = document.getElementById('nav-links');
+          const menuToggle = document.getElementById('menu-toggle');
+          if (navLinks && navLinks.classList.contains('open')) {
+            navLinks.classList.remove('open');
+            if (menuToggle) menuToggle.classList.remove('active');
+          }
+        });
+      });
+
+      // ── Active nav link on scroll (Intersection Observer) ──
+      const sections = document.querySelectorAll('section[id^="section-"]');
+      const observerOptions = { root: null, rootMargin: '-20% 0px -60% 0px', threshold: 0 };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute('id');
+            navScrollLinks.forEach(link => {
+              link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+            });
+          }
+        });
+      }, observerOptions);
+
+      sections.forEach(section => observer.observe(section));
+    });
+  </script>
+</body>
+
+</html>

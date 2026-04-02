@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact — Portfolio</title>
+    <meta name="description" content="Get in touch — researcher and academic professional." />
+    <meta name="page-name" content="Contact" />
+    <meta property="og:title" content="Contact — Portfolio" />
+    <meta property="og:description"
+        content="Contact for collaboration, research inquiries, or professional connections." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/themes.css" />
+    <link rel="stylesheet" href="css/layouts.css" />
+</head>
+
+<body>
+
+    <!-- ── NAVBAR ── -->
+    <nav id="navbar" role="navigation" aria-label="Main navigation">
+        <div class="container nav-inner">
+            <a href="index.html" class="nav-logo"><span class="nav-logo-text">…</span><span>.</span></a>
+            <ul id="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="lecturing.html">Lecturing</a></li>
+                <li><a href="research.html">Research</a></li>
+                <li><a href="product.html">Product</a></li>
+                <li><a href="community-services.html">Community</a></li>
+                <li><a href="contact.html" class="active">Contact</a></li>
+            </ul>
+            <button id="menu-toggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+
+    <!-- ── PAGE HEADER ── -->
+    <header class="page-header" role="banner">
+        <div class="page-header-content">
+            <span class="section-label" style="background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);">Get in
+                Touch</span>
+            <h1>Contact Me</h1>
+            <p>Let's collaborate, connect, or just have a conversation.</p>
+        </div>
+    </header>
+
+    <!-- ── CONTACT SECTION ── -->
+    <section class="section section-soft" aria-labelledby="contact-heading">
+        <div class="container">
+            <div class="contact-grid">
+
+                <!-- Info Card -->
+                <div class="contact-info-card" data-aos="fade-right">
+                    <h3>Contact Information</h3>
+
+                    <div class="contact-item">
+                        <div class="contact-icon" aria-hidden="true">✉️</div>
+                        <div class="contact-detail">
+                            <strong>Email</strong>
+                            <a href="#" id="contact-email" data-contact="email">adam@example.com</a>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-icon" aria-hidden="true">💼</div>
+                        <div class="contact-detail">
+                            <strong>LinkedIn</strong>
+                            <a href="#" id="contact-linkedin" data-contact="linkedin" target="_blank"
+                                rel="noopener">View Profile</a>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-icon" aria-hidden="true">💻</div>
+                        <div class="contact-detail">
+                            <strong>GitHub</strong>
+                            <a href="#" id="contact-github" data-contact="github" target="_blank" rel="noopener">View
+                                Profile</a>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-icon" aria-hidden="true">📱</div>
+                        <div class="contact-detail">
+                            <strong>Phone</strong>
+                            <span id="contact-phone" data-contact="phone">+62 xxx-xxxx-xxxx</span>
+                        </div>
+                    </div>
+
+                    <div class="contact-social-links" aria-label="Social media links">
+                        <a href="#" id="social-linkedin" class="social-link" target="_blank" rel="noopener"
+                            aria-label="LinkedIn" title="LinkedIn">in</a>
+                        <a href="#" id="social-github" class="social-link" target="_blank" rel="noopener"
+                            aria-label="GitHub" title="GitHub">gh</a>
+                        <a href="#" id="social-email" class="social-link" aria-label="Email" title="Email">@</a>
+                    </div>
+                </div>
+                <!-- Right Card: Availability & Quick Info -->
+                <div class="contact-right-card" data-aos="fade-left">
+
+                    <!-- Availability Badge -->
+                    <div class="availability-banner" id="contact-availability-banner">
+                        <div class="availability-dot" id="contact-availability-dot"></div>
+                        <span id="contact-availability-text">Available for Collaboration</span>
+                    </div>
+
+                    <!-- Quick Response Card -->
+                    <div class="quick-info-section">
+                        <h3>💬 Let's Work Together</h3>
+                        <p class="quick-info-text" id="contact-collab-text">
+                            I'm always interested in research collaborations, guest lectures, 
+                            consulting opportunities, and innovative projects.
+                        </p>
+                    </div>
+
+                    <!-- Office Hours -->
+                    <div class="office-hours-section">
+                        <h4>🕐 Office Hours</h4>
+                        <div class="hours-grid">
+                            <div class="hours-row">
+                                <span class="day">Monday – Friday</span>
+                                <span class="time" id="contact-hours-weekday">08:00 – 17:00 WIB</span>
+                            </div>
+                            <div class="hours-row">
+                                <span class="day">Saturday</span>
+                                <span class="time" id="contact-hours-saturday">By Appointment</span>
+                            </div>
+                            <div class="hours-row">
+                            <span class="day">Sunday</span>
+                            <span class="time closed" id="contact-hours-sunday">Closed</span>
+                        </div>
+                        </div>
+                    </div>
+
+                    <!-- Response Time -->
+                    <div class="response-info" id="contact-response-info">
+                        <div class="response-icon" id="contact-response-icon">⚡</div>
+                        <div>
+                            <strong id="contact-response-title">Quick Response</strong>
+                            <p id="contact-response-text">Typically responds within 24 hours</p>
+                        </div>
+                    </div>
+
+                    <!-- Address/Location -->
+                    <div class="location-section">
+                        <h4>📍 Location</h4>
+                        <p id="contact-address">Jakarta, Indonesia</p>
+                    </div>
+
+                    <!-- CTA Button -->
+                    <a href="#" id="contact-cta-email" class="btn btn-primary contact-cta-btn">
+                        ✉️ Send an Email
+                    </a>
+                </div>
+        </div>
+    </section>
+
+    <!-- ── FOOTER ── -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <p class="brand-name footer-brand-name">Portfolio</p>
+                    <p class="footer-brand-desc">Academic researcher dedicated to advancing knowledge and innovation.</p>
+                </div>
+                <nav class="footer-nav" aria-label="Footer navigation">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="lecturing.html">Lecturing</a></li>
+                        <li><a href="research.html">Research</a></li>
+                        <li><a href="product.html">Product</a></li>
+                        <li><a href="community-services.html">Community</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+                <div class="footer-contact">
+                    <h4>Connect</h4>
+                    <p><a href="#" id="footer-email">email@example.com</a></p>
+                    <p><a href="#" id="footer-linkedin" target="_blank" rel="noopener">LinkedIn</a></p>
+                    <p><a href="#" id="footer-github" target="_blank" rel="noopener">GitHub</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="footer-copyright-text">&copy; 2024. All rights reserved.</p>
+                <div class="footer-social">
+                    <a href="#" target="_blank" rel="noopener" aria-label="LinkedIn">in</a>
+                    <a href="#" target="_blank" rel="noopener" aria-label="GitHub">gh</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script src="js/animations.js" defer></script>
+    <script type="module" src="js/main.js?v=2"></script>
+</body>
+
+</html>

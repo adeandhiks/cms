@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About — Portfolio</title>
+    <meta name="description" content="Professional experience and academic background." />
+    <meta name="page-name" content="About" />
+    <meta property="og:title" content="About — Portfolio" />
+    <meta property="og:description" content="Professional experience and academic achievements." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/themes.css" />
+    <link rel="stylesheet" href="css/layouts.css" />
+</head>
+
+<body>
+
+    <!-- ── NAVBAR ── -->
+    <nav id="navbar" role="navigation" aria-label="Main navigation">
+        <div class="container nav-inner">
+            <a href="index.html" class="nav-logo"><span class="nav-logo-text">…</span><span>.</span></a>
+            <ul id="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html" class="active">About</a></li>
+                <li><a href="lecturing.html">Lecturing</a></li>
+                <li><a href="research.html">Research</a></li>
+                <li><a href="product.html">Product</a></li>
+                <li><a href="community-services.html">Community</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <button id="menu-toggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+
+    <!-- ── PAGE HEADER ── -->
+    <header class="page-header" role="banner">
+        <div class="page-header-content">
+            <span class="section-label" style="background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);">About
+                Me</span>
+            <h1>Professional Experience</h1>
+            <p>A journey of growth, research, and academic excellence.</p>
+        </div>
+    </header>
+
+    <!-- ── PROFILE CARD ── -->
+    <section class="section section-soft" aria-label="Profile summary">
+        <div class="container">
+            <div style="display:grid;grid-template-columns:280px 1fr;gap:2.5rem;align-items:start;max-width:900px;margin:0 auto;"
+                data-aos="fade-up">
+                <div class="about-photo-card" style="position:sticky;top:80px;">
+                    <div id="about-photo-placeholder"
+                        style="width:160px;height:160px;border-radius:50%;background:linear-gradient(135deg,rgba(37,99,235,.15),rgba(6,182,212,.1));display:flex;align-items:center;justify-content:center;font-size:4rem;margin:0 auto 1.5rem;">
+                        🎓</div>
+                    <img id="about-photo" style="display:none;" src="" alt="Profile photo" class="" loading="lazy" />
+                    <p class="about-name" id="about-name"></p>
+                    <p class="about-role" id="about-title">Academic Researcher</p>
+                </div>
+                <div>
+                    <span class="section-label">Biography</span>
+                    <h2 class="section-title" style="text-align:left;font-size:1.75rem;margin-top:.5rem;">Professional
+                        Background</h2>
+                    <p id="about-bio"
+                        style="color:var(--color-text-muted);font-size:1rem;margin-top:1rem;line-height:1.8;">
+                        A dedicated academic professional committed to advancing knowledge through
+                        rigorous research, innovation, and collaboration. With years of experience in academia and
+                        research, continuing to contribute meaningfully to the field.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── EXPERIENCE TIMELINE ── -->
+    <section class="section section-light" aria-labelledby="experience-heading">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-label">Experience</span>
+                <h2 class="section-title" id="experience-heading">Work Experience</h2>
+                <p class="section-subtitle">Professional roles and academic positions over recent years.</p>
+            </div>
+            <div class="timeline" id="experience-timeline" role="list" aria-live="polite">
+                <div class="empty-state">Loading experience data…</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── FOOTER ── -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <p class="brand-name footer-brand-name">Portfolio</p>
+                    <p class="footer-brand-desc">Academic researcher dedicated to advancing knowledge and innovation.</p>
+                </div>
+                <nav class="footer-nav" aria-label="Footer navigation">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="lecturing.html">Lecturing</a></li>
+                        <li><a href="research.html">Research</a></li>
+                        <li><a href="product.html">Product</a></li>
+                        <li><a href="community-services.html">Community</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+                <div class="footer-contact">
+                    <h4>Connect</h4>
+                    <p><a href="#" id="footer-email">email@example.com</a></p>
+                    <p><a href="#" id="footer-linkedin" target="_blank" rel="noopener">LinkedIn</a></p>
+                    <p><a href="#" id="footer-github" target="_blank" rel="noopener">GitHub</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="footer-copyright-text">&copy; 2024. All rights reserved.</p>
+                <div class="footer-social">
+                    <a href="#" id="footer-linkedin-icon" target="_blank" rel="noopener" aria-label="LinkedIn">in</a>
+                    <a href="#" id="footer-github-icon" target="_blank" rel="noopener" aria-label="GitHub">gh</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script src="js/animations.js" defer></script>
+    <script type="module" src="js/main.js?v=2"></script>
+    <script>
+        // Photo show/hide on load
+        const aboutImg = document.getElementById('about-photo');
+        const aboutPlaceholder = document.getElementById('about-photo-placeholder');
+        if (aboutImg) {
+            aboutImg.addEventListener('load', () => {
+                if (aboutImg.src && !aboutImg.src.endsWith('undefined') && !aboutImg.src.endsWith('/')) {
+                    aboutImg.style.display = 'block';
+                    aboutImg.style.width = '160px';
+                    aboutImg.style.height = '160px';
+                    aboutImg.style.borderRadius = '50%';
+                    aboutImg.style.objectFit = 'cover';
+                    aboutImg.style.margin = '0 auto 1.5rem';
+                    if (aboutPlaceholder) aboutPlaceholder.style.display = 'none';
+                }
+            });
+        }
+        // Wire profile data to about page fields
+        window.addEventListener('profileLoaded', (e) => {
+            const d = e.detail;
+            if (d.photo_url) document.getElementById('about-photo').src = d.photo_url;
+            if (d.name) document.getElementById('about-name').textContent = d.name;
+            if (d.title) document.getElementById('about-title').textContent = d.title;
+            if (d.bio) document.getElementById('about-bio').textContent = d.bio;
+        });
+    </script>
+</body>
+
+</html>

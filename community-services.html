@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Community Services — Portfolio</title>
+    <meta name="description" content="Community service activities and social contributions." />
+    <meta name="page-name" content="Community Services" />
+    <meta property="og:title" content="Community Services — Portfolio" />
+    <meta property="og:description"
+        content="Explore community service activities and social contributions." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/themes.css" />
+    <link rel="stylesheet" href="css/layouts.css" />
+</head>
+
+<body>
+
+    <!-- ── NAVBAR ── -->
+    <nav id="navbar" role="navigation" aria-label="Main navigation">
+        <div class="container nav-inner">
+            <a href="index.html" class="nav-logo"><span class="nav-logo-text">…</span><span>.</span></a>
+            <ul id="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="lecturing.html">Lecturing</a></li>
+                <li><a href="research.html">Research</a></li>
+                <li><a href="product.html">Product</a></li>
+                <li><a href="community-services.html" class="active">Community</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <button id="menu-toggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+
+    <!-- ── PAGE HEADER ── -->
+    <header class="page-header" role="banner">
+        <div class="page-header-content">
+            <span class="section-label"
+                style="background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);">Service</span>
+            <h1>Community Services</h1>
+            <p>Social contributions, volunteer work, and community engagement activities.</p>
+        </div>
+    </header>
+
+    <!-- ── COMMUNITY SERVICES SECTION ── -->
+    <section class="section section-soft" aria-labelledby="community-services-heading">
+        <div class="container">
+            <!-- Search & Filter -->
+            <div class="search-filter-bar" data-aos="fade-up" role="search" aria-label="Search community services">
+                <div class="search-input-wrapper">
+                    <span class="search-icon" aria-hidden="true">🔍</span>
+                    <input type="search" id="cs-search" placeholder="Search activities, organizations…"
+                        aria-label="Search community services" />
+                </div>
+                <select id="cs-year" aria-label="Filter by year">
+                    <option value="">All Years</option>
+                </select>
+                <select id="cs-role" aria-label="Filter by role">
+                    <option value="">All Roles</option>
+                </select>
+            </div>
+            <!-- Grid -->
+            <div class="cards-grid" id="cs-grid" role="list" aria-live="polite"
+                aria-label="Community service activities">
+                <div class="empty-state">Loading activities…</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── FOOTER ── -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <p class="brand-name footer-brand-name">Portfolio</p>
+                    <p class="footer-brand-desc">Academic researcher dedicated to advancing knowledge and innovation.</p>
+                </div>
+                <nav class="footer-nav" aria-label="Footer navigation">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="lecturing.html">Lecturing</a></li>
+                        <li><a href="research.html">Research</a></li>
+                        <li><a href="product.html">Product</a></li>
+                        <li><a href="community-services.html">Community</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+                <div class="footer-contact">
+                    <h4>Connect</h4>
+                    <p><a href="#" id="footer-email">email@example.com</a></p>
+                    <p><a href="#" id="footer-linkedin" target="_blank" rel="noopener">LinkedIn</a></p>
+                    <p><a href="#" id="footer-github" target="_blank" rel="noopener">GitHub</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="footer-copyright-text">&copy; 2024. All rights reserved.</p>
+                <div class="footer-social">
+                    <a href="#" target="_blank" rel="noopener" aria-label="LinkedIn">in</a>
+                    <a href="#" target="_blank" rel="noopener" aria-label="GitHub">gh</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script src="js/animations.js" defer></script>
+    <script type="module" src="js/main.js?v=2"></script>
+</body>
+
+</html>

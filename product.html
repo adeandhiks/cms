@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Products — Portfolio</title>
+    <meta name="description" content="Products and intellectual property developed." />
+    <meta name="page-name" content="Products" />
+    <meta property="og:title" content="Products — Portfolio" />
+    <meta property="og:description"
+        content="Explore the innovative products and intellectual property." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/themes.css" />
+    <link rel="stylesheet" href="css/layouts.css" />
+</head>
+
+<body>
+
+    <!-- ── NAVBAR ── -->
+    <nav id="navbar" role="navigation" aria-label="Main navigation">
+        <div class="container nav-inner">
+            <a href="index.html" class="nav-logo"><span class="nav-logo-text">…</span><span>.</span></a>
+            <ul id="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="lecturing.html">Lecturing</a></li>
+                <li><a href="research.html">Research</a></li>
+                <li><a href="product.html" class="active">Product</a></li>
+                <li><a href="community-services.html">Community</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <button id="menu-toggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+
+    <!-- ── PAGE HEADER ── -->
+    <header class="page-header" role="banner">
+        <div class="page-header-content">
+            <span class="section-label"
+                style="background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);">Portfolio</span>
+            <h1>Products & Intellectual Property</h1>
+            <p>Innovative solutions and intellectual works developed over recent years.</p>
+        </div>
+    </header>
+
+    <!-- ── PRODUCTS SECTION ── -->
+    <section class="section section-soft" aria-labelledby="product-heading">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-label">Works</span>
+                <h2 class="section-title" id="product-heading">All Products</h2>
+                <p class="section-subtitle">A showcase of products, tools, and intellectual property created from
+                    innovation and research.</p>
+            </div>
+            <div class="cards-grid" id="product-grid" role="list" aria-live="polite"
+                aria-label="Products and intellectual property">
+                <div class="empty-state">Loading products…</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── FOOTER ── -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <p class="brand-name footer-brand-name">Portfolio</p>
+                    <p class="footer-brand-desc">Academic researcher dedicated to advancing knowledge and innovation.</p>
+                </div>
+                <nav class="footer-nav" aria-label="Footer navigation">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="lecturing.html">Lecturing</a></li>
+                        <li><a href="research.html">Research</a></li>
+                        <li><a href="product.html">Product</a></li>
+                        <li><a href="community-services.html">Community</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+                <div class="footer-contact">
+                    <h4>Connect</h4>
+                    <p><a href="#" id="footer-email">email@example.com</a></p>
+                    <p><a href="#" id="footer-linkedin" target="_blank" rel="noopener">LinkedIn</a></p>
+                    <p><a href="#" id="footer-github" target="_blank" rel="noopener">GitHub</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="footer-copyright-text">&copy; 2024. All rights reserved.</p>
+                <div class="footer-social">
+                    <a href="#" target="_blank" rel="noopener" aria-label="LinkedIn">in</a>
+                    <a href="#" target="_blank" rel="noopener" aria-label="GitHub">gh</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script src="js/animations.js" defer></script>
+    <script type="module" src="js/main.js?v=2"></script>
+</body>
+
+</html>

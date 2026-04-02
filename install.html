@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Install — Portfolio CMS</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="stylesheet" href="css/install.css" />
+</head>
+
+<body>
+    <div class="install-bg"></div>
+
+    <div class="install-container">
+        <!-- Logo -->
+        <div class="install-logo">
+            <div class="logo-icon">🎓</div>
+            <h1>Portfolio CMS</h1>
+            <p>Installation Wizard</p>
+        </div>
+
+        <!-- Step Indicators -->
+        <div class="step-indicators" id="step-indicators">
+            <div class="step-dot active" data-step="1"><span>1</span></div>
+            <div class="step-line" data-line="1"></div>
+            <div class="step-dot" data-step="2"><span>2</span></div>
+            <div class="step-line" data-line="2"></div>
+            <div class="step-dot" data-step="3"><span>3</span></div>
+            <div class="step-line" data-line="3"></div>
+            <div class="step-dot" data-step="4"><span>4</span></div>
+            <div class="step-line" data-line="4"></div>
+            <div class="step-dot" data-step="5"><span>5</span></div>
+        </div>
+
+        <!-- Install Card -->
+        <div class="install-card">
+
+            <!-- ═══════════════ STEP 1: Welcome ═══════════════ -->
+            <div class="install-step active" id="step-1">
+                <div class="card-header">
+                    <h2>👋 Welcome to Portfolio CMS</h2>
+                    <p>This wizard will guide you through the installation process. It only takes a few minutes!</p>
+                </div>
+                <div class="card-body">
+                    <div class="welcome-features">
+                        <div class="feature-item">
+                            <div class="feature-icon blue">🗃️</div>
+                            <div>
+                                <h4>Database Setup</h4>
+                                <p>Auto-create all tables, indexes, and functions</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon green">🔒</div>
+                            <div>
+                                <h4>Security Policies</h4>
+                                <p>Row Level Security &amp; access control configured</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon purple">📝</div>
+                            <div>
+                                <h4>Sample Data</h4>
+                                <p>Dummy content to get started quickly</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon orange">👤</div>
+                            <div>
+                                <h4>Admin Account</h4>
+                                <p>Set up your admin credentials for the CMS</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="requirements-box">
+                        <h4>📋 Before you begin, make sure you have:</h4>
+                        <ul>
+                            <li>A Supabase project (free at <a href="https://supabase.com" target="_blank" style="color:#D97706;text-decoration:underline;">supabase.com</a>)</li>
+                            <li>Your project's <strong>URL</strong> and <strong>Anon Key</strong> (from Project Settings → API)</li>
+                            <li>Your project's <strong>Service Role Key</strong> (from Project Settings → API → service_role)</li>
+                            <li>A <strong>Supabase Access Token</strong> (from <a href="https://supabase.com/dashboard/account/tokens" target="_blank" style="color:#D97706;text-decoration:underline;">Account → Access Tokens</a>)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <span style="font-size:.8rem;color:var(--color-text-muted);">Step 1 of 5</span>
+                    <button class="btn btn-primary" onclick="goToStep(2)">Let's Get Started →</button>
+                </div>
+            </div>
+
+            <!-- ═══════════════ STEP 2: Database Connection ═══════════════ -->
+            <div class="install-step" id="step-2">
+                <div class="card-header">
+                    <h2>🔗 Database Connection</h2>
+                    <p>Connect to your Supabase project. You'll find these credentials in your Supabase Dashboard → Project Settings → API.</p>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="supabase-url">Supabase Project URL <span class="required">*</span></label>
+                        <input type="url" id="supabase-url" placeholder="https://xxxxxx.supabase.co" required />
+                        <div class="help-text">Example: https://abcdefghij.supabase.co</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="supabase-anon-key">Anon (Public) Key <span class="required">*</span></label>
+                        <input type="text" id="supabase-anon-key" placeholder="eyJhbGciOiJIUzI1NiIs..." required />
+                        <div class="help-text">Used by the frontend to read public data. Safe to expose.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="supabase-service-key">Service Role Key <span class="required">*</span></label>
+                        <div class="password-wrapper">
+                            <input type="password" id="supabase-service-key" placeholder="eyJhbGciOiJIUzI1NiIs..." required />
+                            <button type="button" class="toggle-pw" onclick="toggleServiceKey()">👁</button>
+                        </div>
+                        <div class="help-text">⚠️ This key has full database access. Only used during installation, <strong>never stored</strong> in your files.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="supabase-access-token">Access Token <span class="required">*</span></label>
+                        <div class="password-wrapper">
+                            <input type="password" id="supabase-access-token" placeholder="sbp_xxxxxxxxxxxxxxxx" required />
+                            <button type="button" class="toggle-pw" onclick="toggleAccessToken()">👁</button>
+                        </div>
+                        <div class="help-text">Generate at <a href="https://supabase.com/dashboard/account/tokens" target="_blank" style="color:var(--color-primary);">Account → Access Tokens</a>. Required for automatic SQL execution.</div>
+                    </div>
+
+                    <button class="btn btn-outline btn-sm" id="btn-test-connection" onclick="testConnection()">
+                        🔌 Test Connection
+                    </button>
+
+                    <div class="connection-status" id="connection-status"></div>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-outline" onclick="goToStep(1)">← Back</button>
+                    <span style="font-size:.8rem;color:var(--color-text-muted);">Step 2 of 5</span>
+                    <button class="btn btn-primary" id="btn-step2-next" onclick="validateAndGoStep3()">Next →</button>
+                </div>
+            </div>
+
+            <!-- ═══════════════ STEP 3: Database Setup ═══════════════ -->
+            <div class="install-step" id="step-3">
+                <div class="card-header">
+                    <h2>🗃️ Database Setup</h2>
+                    <p>Click "Run Installation" to create all tables, security policies, functions, and sample data in your Supabase database.</p>
+                </div>
+                <div class="card-body">
+                    <!-- SQL Preview -->
+                    <div class="sql-preview">
+                        <div class="sql-preview-header">
+                            <span>📄 install.sql</span>
+                            <button class="btn btn-ghost btn-sm" onclick="copySql()" style="color:rgba(255,255,255,.6);padding:.3rem .6rem;">
+                                📋 Copy SQL
+                            </button>
+                        </div>
+                        <div class="sql-preview-body" id="sql-preview"></div>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <strong>ℹ️ What will be created:</strong>
+                        10 tables (profile, experience, research, product, contact_info, messages, admin_users, admin_settings, lecturing, community_services),
+                        RLS policies, RPCs (admin_login, verify_admin_key, etc.), triggers, storage bucket, and sample data.
+                    </div>
+
+                    <!-- Installation Progress -->
+                    <div class="install-progress" id="install-progress" style="display:none;">
+                        <div class="progress-bar-track">
+                            <div class="progress-bar-fill" id="progress-bar"></div>
+                        </div>
+                        <ul class="progress-steps" id="progress-steps">
+                            <li class="progress-step" data-step="extensions"><span class="step-icon">1</span> Enabling extensions (pgcrypto)</li>
+                            <li class="progress-step" data-step="tables"><span class="step-icon">2</span> Creating tables &amp; indexes</li>
+                            <li class="progress-step" data-step="rls"><span class="step-icon">3</span> Setting up Row Level Security</li>
+                            <li class="progress-step" data-step="rpcs"><span class="step-icon">4</span> Creating RPC functions &amp; triggers</li>
+                            <li class="progress-step" data-step="storage"><span class="step-icon">5</span> Setting up storage buckets</li>
+                            <li class="progress-step" data-step="migrations"><span class="step-icon">6</span> Running migration scripts</li>
+                            <li class="progress-step" data-step="seed"><span class="step-icon">7</span> Inserting sample data</li>
+                        </ul>
+                    </div>
+
+                    <!-- Copy SQL Fallback -->
+                    <div class="copy-sql-section" id="copy-sql-fallback">
+                        <div class="alert alert-warning">
+                            <strong>⚠️ Automatic installation failed</strong>
+                            Please copy the SQL above and run it manually in your Supabase SQL Editor (Dashboard → SQL Editor → New Query → Paste → Run).
+                            After running the SQL manually, click "Continue" to proceed.
+                        </div>
+                        <button class="btn btn-outline btn-sm btn-block" onclick="copySql()" style="margin-top:.5rem;">📋 Copy Full SQL to Clipboard</button>
+                    </div>
+
+                    <!-- Install Error -->
+                    <div class="alert alert-error" id="install-error" style="display:none;"></div>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-outline" id="btn-step3-back" onclick="goToStep(2)">← Back</button>
+                    <span style="font-size:.8rem;color:var(--color-text-muted);">Step 3 of 5</span>
+                    <button class="btn btn-success" id="btn-run-install" onclick="runInstallation()">⚡ Run Installation</button>
+                    <button class="btn btn-primary" id="btn-step3-next" onclick="goToStep(4)" style="display:none;">Next →</button>
+                </div>
+            </div>
+
+            <!-- ═══════════════ STEP 4: Admin Account ═══════════════ -->
+            <div class="install-step" id="step-4">
+                <div class="card-header">
+                    <h2>👤 Create Admin Account</h2>
+                    <p>Set up your administrator account. Existing admin data will be cleared and replaced with your new credentials.</p>
+                </div>
+                <div class="card-body">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="admin-name">Display Name <span class="required">*</span></label>
+                            <input type="text" id="admin-name" placeholder="e.g. Adam Puspabhuana" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="admin-email">Email Address <span class="required">*</span></label>
+                            <input type="email" id="admin-email" placeholder="e.g. admin@example.com" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="admin-password">Password <span class="required">*</span></label>
+                        <div class="password-wrapper">
+                            <input type="password" id="admin-password" placeholder="Minimum 8 characters" required oninput="checkPasswordStrength()" />
+                            <button type="button" class="toggle-pw" onclick="togglePassword('admin-password')">👁</button>
+                        </div>
+                        <div class="password-strength" id="pw-strength">
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                        </div>
+                        <div class="password-strength-text" id="pw-strength-text"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="admin-password-confirm">Confirm Password <span class="required">*</span></label>
+                        <div class="password-wrapper">
+                            <input type="password" id="admin-password-confirm" placeholder="Re-enter your password" required />
+                            <button type="button" class="toggle-pw" onclick="togglePassword('admin-password-confirm')">👁</button>
+                        </div>
+                        <div class="error-text" id="pw-match-error">Passwords do not match.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="admin-secret-key">Admin Secret Key</label>
+                        <input type="text" id="admin-secret-key" placeholder="e.g. my-secret-key-2024" value="" />
+                        <div class="help-text">This key protects the admin URL (/admin?key=...). Leave blank to use the default.</div>
+                    </div>
+
+                    <div class="alert alert-error" id="admin-error" style="display:none;"></div>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-outline" onclick="goToStep(3)">← Back</button>
+                    <span style="font-size:.8rem;color:var(--color-text-muted);">Step 4 of 5</span>
+                    <button class="btn btn-primary" id="btn-create-admin" onclick="createAdminAccount()">Create Account →</button>
+                </div>
+            </div>
+
+            <!-- ═══════════════ STEP 5: Complete ═══════════════ -->
+            <div class="install-step" id="step-5">
+                <div class="card-header" style="text-align:center;border:none;padding-bottom:0;">
+                    <div class="success-icon">🎉</div>
+                    <h2>Installation Complete!</h2>
+                    <p>Your Portfolio CMS has been successfully installed and configured.</p>
+                </div>
+                <div class="card-body">
+                    <div class="success-info">
+                        <h4>🔑 Your Admin Credentials</h4>
+                        <div class="info-row">
+                            <span class="info-label">Admin URL</span>
+                            <span class="info-value" id="result-admin-url">admin/login.html</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Email</span>
+                            <span class="info-value" id="result-email">—</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Secret Key</span>
+                            <span class="info-value" id="result-secret-key">—</span>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning" style="margin-top:1rem;">
+                        <strong>⚠️ Important</strong>
+                        Please save your credentials above. For security, <strong>delete or rename <code>install.html</code></strong> after installation.
+                    </div>
+
+                    <div style="display:flex;gap:.75rem;margin-top:1.5rem;justify-content:center;flex-wrap:wrap;">
+                        <a class="btn btn-primary" id="link-admin-login" href="admin/login.html">🔐 Go to Admin Login</a>
+                        <a class="btn btn-outline" href="index.html">🌐 View Website</a>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- /install-card -->
+
+        <p style="text-align:center;margin-top:1.5rem;font-size:.78rem;color:rgba(255,255,255,.3);">
+            Portfolio CMS Installer · Powered by Supabase
+        </p>
+    </div>
+
+    <script type="module" src="js/installer.js"></script>
+</body>
+
+</html>
